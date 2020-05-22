@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 Color lightPrimary = Color(0xfffcfcff);
 Color darkPrimary = Colors.black;
-Color lightAccent = Colors.deepPurpleAccent;
-Color darkAccent = Colors.deepPurple;
+Color lightAccent = Color(0xff084545);
+Color darkAccent = Color(0xff084545);
 Color lightBG = Color(0xfff0f0f0);
-Color darkBG = Colors.black;
+Color darkBG = Color(0xff4C4D4E);
 
 ThemeData lightTheme = ThemeData(
   backgroundColor: lightBG,
@@ -14,13 +14,18 @@ ThemeData lightTheme = ThemeData(
   accentColor:  lightAccent,
   cursorColor: lightAccent,
   scaffoldBackgroundColor: lightBG,
-  textTheme: TextTheme(
-    body2: TextStyle(
-      color: darkBG,
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-    ),
-  ),
+//  textTheme: TextTheme(
+//    body2: TextStyle(
+//      color: darkBG,
+//      fontSize: 16.0,
+//      fontWeight: FontWeight.w500,
+//    ),
+//    body1: TextStyle(
+//      color: darkBG,
+//      fontSize: 16.0,
+//      fontWeight: FontWeight.w500,
+//    ),
+//  ),
   hintColor: Colors.grey,
   buttonTheme: ButtonThemeData(
       splashColor: lightAccent,

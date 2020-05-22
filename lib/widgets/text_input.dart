@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 class TextInput extends StatefulWidget {
 
   final TextEditingController controller;
-  final IconData iconData;
-  final String hintText;
   final TextInputType keyboardType;
   final String Function(String) validator;
 
-  TextInput({ @required this.controller, @required this.hintText,
-     this.keyboardType = TextInputType.text, this.validator, this.iconData});
+  TextInput({ @required this.controller,
+     this.keyboardType = TextInputType.text, this.validator,});
 
   @override
   _TextInputState createState() => _TextInputState();
@@ -22,60 +20,40 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          new BoxShadow(
+            offset: Offset(0, 8),
+            spreadRadius: -10,
+            color: darkBG.withOpacity(0.3),
+            blurRadius: 24,
+          ),
+        ],
       ),
       child: Material(
         child: TextFormField(
-          style: TextStyle(fontSize: 16,),
-          cursorColor: Color(0xff707070),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkBG),
+//          cursorColor: Colors.white,
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           validator: widget.validator,
-          decoration: _getTextDecoration(),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(10.0),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: BorderSide(color: Colors.white,),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white,),
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+
+
+          ),
         ),
       ),
     );
-  }
-
-
-  InputDecoration _getTextDecoration(){
-    if(widget.iconData != null){
-      return InputDecoration(
-        contentPadding: EdgeInsets.all(10.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.white,),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white,),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        hintText: widget.hintText,
-        prefixIcon: Icon(
-          widget.iconData,
-          color: lightAccent,
-        ),
-      );
-    }else{
-      return InputDecoration(
-        contentPadding: EdgeInsets.all(10.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.white,),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white,),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        hintText: widget.hintText,
-
-      );
-    }
   }
 
 }

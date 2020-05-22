@@ -1,5 +1,6 @@
 
 import 'package:findr/utils/margin.dart';
+import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
@@ -14,16 +15,27 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+//      decoration: BoxDecoration(
+//        boxShadow: [
+//          new BoxShadow(
+//            offset: Offset(0, 8),
+//            spreadRadius: -10,
+//            color: darkBG.withOpacity(0.9),
+//            blurRadius: 24,
+//          ),
+//        ],
+//      ),
       width: width == 0.0 ? screenWidth(context) : width,
-    constraints: BoxConstraints.tightForFinite(),
+      constraints: BoxConstraints.tightForFinite(),
 
       child: RaisedButton(
 
-        elevation: 0,
+        splashColor: Colors.white.withOpacity(0.2),
+        elevation: 8,
         onPressed: onPressed,
-        child: Text(text),
+        child: Text(text, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(6.0),
         ),
         padding: EdgeInsets.only(left: 0, right: 0, top: 13, bottom: 13),
       ),
