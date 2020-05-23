@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => SplashScreen(),
         // When navigating to the "/landing" route, build the landing_page widget.
-        '/login': (context) => LoginScreen(),
+//        '/login': (context) => LoginScreen(),
         '/landing': (context) => LandingScreen2(),
       },
     );
