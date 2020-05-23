@@ -1,4 +1,4 @@
-import 'package:findr/screens/login_screen.dart';
+
 import 'package:findr/screens/onboarding_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
 
             TextInput(controller: null, hintText: "Enter email", iconData: LineIcons.envelope,),

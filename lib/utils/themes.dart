@@ -15,7 +15,7 @@ ThemeData lightTheme = ThemeData(
   cursorColor: lightAccent,
   scaffoldBackgroundColor: lightBG,
   textTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       color: darkBG,
       fontSize: 16.0,
       fontWeight: FontWeight.w400,
@@ -32,7 +32,7 @@ ThemeData lightTheme = ThemeData(
     elevation: 0,
     color: lightBG,
     textTheme: TextTheme(
-      title: TextStyle(
+      headline6: TextStyle(
         color: darkBG,
         fontSize: 18.0,
         fontWeight: FontWeight.w800,
@@ -51,7 +51,7 @@ ThemeData darkTheme = ThemeData(
   cardColor: darkBG,
 
   textTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       color: lightBG,
       fontSize: 16.0,
       fontWeight: FontWeight.w400,
@@ -66,7 +66,7 @@ ThemeData darkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     elevation: 0,
     textTheme: TextTheme(
-      title: TextStyle(
+      headline6: TextStyle(
         color: lightBG,
         fontSize: 18.0,
         fontWeight: FontWeight.w800,

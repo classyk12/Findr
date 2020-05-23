@@ -1,7 +1,6 @@
 import 'package:findr/screens/login_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
-import 'package:findr/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:line_icons/line_icons.dart';
