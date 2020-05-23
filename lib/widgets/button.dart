@@ -1,6 +1,5 @@
 
 import 'package:findr/utils/margin.dart';
-import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
@@ -8,9 +7,9 @@ class Button extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double width;
+  final double height;
 
-
-  Button({@required this.text, @required this.onPressed, this.width = 0.0});
+  Button({@required this.text, @required this.onPressed, this.width = 0.0, this.height=0.0});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +26,8 @@ class Button extends StatelessWidget {
 //      ),
       width: width == 0.0 ? screenWidth(context) : width,
       constraints: BoxConstraints.tightForFinite(),
+
+      height: this.height,
 
       child: RaisedButton(
 

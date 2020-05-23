@@ -3,7 +3,6 @@ import 'package:findr/widgets/button.dart';
 import 'package:findr/widgets/password_input.dart';
 import 'package:findr/widgets/text_input.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 
 class LoginScreen extends StatelessWidget{
 
