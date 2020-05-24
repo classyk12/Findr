@@ -1,6 +1,5 @@
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -9,18 +8,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-//  @override
-//  void initState() {
-//    super.initState();
-//
-//  }
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3),
+            () => Navigator.pushReplacementNamed(context, '/landing'));
+//        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OnboardingScreen())));
 
-  Timer t;
+
+  }
+
+
+//  Timer t;
 
   @override
   Widget build(BuildContext context) {
-    t = Timer(Duration(seconds: 3),
-        () => Navigator.pushReplacementNamed(context, '/landing'));
 
     return Container(
       color: Colors.white,
@@ -36,7 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void dispose() {
+//    t.cancel();
     super.dispose();
-    t.cancel();
+
   }
 }

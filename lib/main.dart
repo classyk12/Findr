@@ -1,11 +1,8 @@
-
-import 'package:findr/screens/Onboarding/landing_page2.dart';
 import 'package:findr/screens/onboarding/landing_page.dart';
 import 'package:findr/screens/splash_screen.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/login_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,14 +14,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: lightTheme,
-      darkTheme: darkTheme,
-   initialRoute: '/',
+//      darkTheme: darkTheme,
+      initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(),
         // When navigating to the "/landing" route, build the landing_page widget.
-        '/login': (context) => LoginScreen(),
+//        '/login': (context) => LoginScreen(),
         '/landing': (context) => LandingScreen2(),
-         '/agent-student':(context) => LandingScreen()
       },
     );
   }
