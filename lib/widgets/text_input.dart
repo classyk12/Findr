@@ -9,7 +9,7 @@ class TextInput extends StatefulWidget {
   final String Function(String) validator;
 
   TextInput({ @required this.controller,
-     this.keyboardType = TextInputType.text, this.validator,});
+     this.keyboardType = TextInputType.text, this.validator});
 
   @override
   _TextInputState createState() => _TextInputState();
@@ -38,6 +38,7 @@ class _TextInputState extends State<TextInput> {
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           validator: widget.validator,
+          
           decoration: InputDecoration(
             contentPadding: EdgeInsets.all(10.0),
             border: OutlineInputBorder(

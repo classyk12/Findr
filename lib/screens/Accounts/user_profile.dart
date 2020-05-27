@@ -1,7 +1,6 @@
+import 'package:findr/screens/Accounts/edit_profile.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
-import 'package:findr/widgets/button.dart';
-import 'package:findr/widgets/pin_field.dart';
 import 'package:findr/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 
@@ -148,12 +147,15 @@ bool _isVerified = true;
               child: Container(
                 color: Colors.green[100],
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Row(children: <Widget>[
-                    XMargin(12.0),
+                    XMargin(25.0),
                     Icon(Icons.edit, color: Colors.black), XMargin(10.0),
-                    Text('Edit profile', style: TextStyle(color: Colors.black, fontSize:16.0, fontWeight:FontWeight.w600)
-              )]
+                    FlatButton(child: Text('Edit profile', style: TextStyle(color: Colors.black, fontSize:16.0, fontWeight:FontWeight.w600),
+              ), onPressed: (){
+                
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfileScreen()));
+              },)]
                   ),
                 )
               ),
