@@ -1,3 +1,4 @@
+import 'package:findr/screens/Accounts/user_profile.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
@@ -179,7 +180,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _pageController.animateToPage(_currentPage + 1, duration: Duration(seconds: 1), curve: Curves.linearToEaseOut);
             }, text: 'an agent', height: 50.0),
             YMargin(20),
-            Button(onPressed: () {}, text: 'a student', height: 50.0),
+            Button(onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>UserProfileScreen()));
+            },
+             text: 'a student', height: 50.0),
 
 
           ],
