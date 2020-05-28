@@ -18,20 +18,25 @@ class PinField extends StatelessWidget {
       height: 40,
       child: PinInputTextField(
         pinLength: 4,
-        decoration: BoxLooseDecoration(
-          strokeColor: darkAccent,
+        decoration: UnderlineDecoration(
+//          strokeColor: darkAccent,
+
+        color: Colors.grey[400],
+        enteredColor: darkAccent,
           textStyle: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w800, color: darkBG),
 //          color: darkAccent,
-          strokeWidth: 2,
-//obscureStyle: ObscureStyle(
-//  isTextObscure: true,
-////      obscureText: '*'
-//),
-          gapSpace: 12,
-//          lineHeight: 2,
+//          strokeWidth: 1.5,
+hintText: '****',
+obscureStyle: ObscureStyle(
+  isTextObscure: true,
+//      obscureText: '*'
+),
+          gapSpace: 20,
+          lineHeight: 1,
         ),
         inputFormatter: [WhitelistingTextInputFormatter.digitsOnly],
+        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
         controller: pinController,
         autoFocus: true,
 //        onSubmit: (pin) {

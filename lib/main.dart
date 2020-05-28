@@ -1,5 +1,6 @@
-import 'package:findr/screens/Accounts/user_profile.dart';
-import 'package:findr/screens/onboarding/landing_page.dart';
+import 'package:findr/screens/Accounts/agent_profile.dart';
+import 'package:findr/screens/Onboarding/landing_page.dart';
+import 'package:findr/screens/login_screen.dart';
 import 'package:findr/screens/splash_screen.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => SplashScreen(),
         // When navigating to the "/landing" route, build the landing_page widget.
-//        '/login': (context) => LoginScreen(),
+        '/login': (context) => LoginScreen(),
         '/landing': (context) => LandingScreen(),
-        '/user-profile': (context) => UserProfileScreen()
+        '/user-profile': (context) => AgentProfileScreen()
       },
     );
   }

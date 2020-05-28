@@ -7,9 +7,10 @@ class TextInput extends StatefulWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String Function(String) validator;
+  final String hintText;
 
   TextInput({ @required this.controller,
-     this.keyboardType = TextInputType.text, this.validator});
+     this.keyboardType = TextInputType.text, this.validator, this.hintText = ''});
 
   @override
   _TextInputState createState() => _TextInputState();
@@ -38,18 +39,24 @@ class _TextInputState extends State<TextInput> {
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           validator: widget.validator,
-          
+
           decoration: InputDecoration(
+            hintText: widget.hintText,
+            hintStyle: TextStyle(fontSize: 16),
             contentPadding: EdgeInsets.all(10.0),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(color: Colors.white,),
+              borderSide: BorderSide(color: Colors.transparent,),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white,),
+              borderSide: BorderSide(color: Colors.transparent,),
               borderRadius: BorderRadius.circular(20.0),
             ),
 
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent,),
+              borderRadius: BorderRadius.circular(20.0),
+            ),
 
           ),
         ),

@@ -30,7 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children:<Widget>[
-             Image.asset('assets/images/Findr2.png',height: 200.0, width: 200),
+             Hero(
+               tag: 'findr_logo',
+                 child: Image.asset('assets/images/Findr2.png',height: 200.0, width: 200),),
           ]
         ),
     ));

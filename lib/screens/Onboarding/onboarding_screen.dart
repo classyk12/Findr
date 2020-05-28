@@ -1,10 +1,16 @@
-import 'package:findr/screens/Accounts/user_profile.dart';
+import 'package:findr/screens/Accounts/agent_profile.dart';
+import 'package:findr/screens/agent_verification_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
+import 'package:findr/widgets/house_item.dart';
+import 'package:findr/widgets/phone_field.dart';
 import 'package:findr/widgets/pin_field.dart';
 import 'package:findr/widgets/profile_picture.dart';
+import 'package:findr/widgets/search_field.dart';
+import 'package:findr/widgets/text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' as limiter;
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -12,9 +18,8 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final int _numPages = 4;
-  final PageController _pageController =
-      PageController(initialPage: 0);
+  final int _numPages = 3;
+  final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
   List<Widget> _buildPageIndicator() {
@@ -48,50 +53,52 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         elevation: 0,
         automaticallyImplyLeading: false,
         centerTitle: false,
-        title: _currentPage > 0 ? InkWell(
-          onTap: (){
-            setState(() {
-              _pageController.animateToPage(_currentPage - 1, duration: Duration(seconds: 1), curve: Curves.linearToEaseOut);
-            });
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-            Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 20.0,
-            ),
-            Text('Back',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
+        title: _currentPage > 0
+            ? InkWell(
+                onTap: () {
+                  setState(() {
+                    _pageController.animateToPage(_currentPage - 1,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.linearToEaseOut);
+                  });
+                },
+                child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Icon(
+                    Icons.arrow_back_ios,
                     color: Colors.black,
-                    fontSize: 16.0,))
-          ]),
-        ) : InkWell(
-          onTap: (){
-            Navigator.pop(context);
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-            Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 20.0,
-            ),
-            Text('Back',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    size: 20.0,
+                  ),
+                  Text('Back',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ))
+                ]),
+              )
+            : InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Icon(
+                    Icons.arrow_back_ios,
                     color: Colors.black,
-                    fontSize: 16.0,))
-          ]),
-        ),
+                    size: 20.0,
+                  ),
+                  Text('Back',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ))
+                ]),
+              ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0).add(EdgeInsets.only(right: 10)),
             child: Text('${_currentPage + 1}/${_buildPageIndicator().length}',
-            style: TextStyle(fontSize: 16)),
+                style: TextStyle(fontSize: 16)),
           )
         ],
       ),
@@ -112,9 +119,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 });
               },
               children: <Widget>[
-
                 _onBoarding1(),
-                _onBoarding2(),
+                _signup(),
+                _profile(),
               ],
             ),
           ),
@@ -131,6 +138,256 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
 
 //              YMargin(30),
+        ],
+      ),
+    );
+  }
+
+  Widget _onBoarding1() {
+    return Padding(
+      padding:
+          const EdgeInsets.all(15.0).add(EdgeInsets.only(left: 5, right: 5)),
+      child: ListView(
+        shrinkWrap: true,
+//        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Getting Started',
+                    style: TextStyle(
+                      color: darkBG,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Image.asset('assets/images/Findr_logo.png',
+                      height: 30.0, width: 30.0),
+                ],
+              ),
+              YMargin(10),
+              Text(
+                'Choose from the following options below',
+                style: TextStyle(color: darkBG, fontSize: 12.0),
+              ),
+            ],
+          ),
+          YMargin(80),
+          Text(
+            'Register as',
+            style: TextStyle(color: darkBG, fontSize: 16.0),
+          ),
+          YMargin(40),
+          Button(
+              onPressed: () {
+                _pageController.animateToPage(_currentPage + 1,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linearToEaseOut);
+              },
+              text: 'an agent',
+              height: 50.0),
+          YMargin(20),
+          Button(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => AgentProfileScreen()));
+              },
+              text: 'a student',
+              height: 50.0),
+        ],
+      ),
+    );
+  }
+
+  Widget _signup() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0).add(
+        EdgeInsets.only(left: 5, right: 5),
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Sign up',
+                style: TextStyle(
+                  color: darkBG,
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Image.asset('assets/images/Findr_logo.png',
+                  height: 30.0, width: 30.0),
+            ],
+          ),
+          YMargin(80),
+          Text(
+            'Phone number',
+            style: TextStyle(
+                fontSize: 15,
+                color: darkBG,
+                fontWeight: FontWeight.w600),
+          ),
+          PhoneField(hintText: '(0) 7089175605', onChanged: (value){
+
+          }),
+          YMargin(20),
+          Text(
+            'E-mail',
+            style: TextStyle(
+                fontSize: 15,
+                color: darkBG,
+                fontWeight: FontWeight.w600),
+          ),
+          TextInput(controller: null, hintText: 'Adekunle_ciroma@zmail.ng',),
+          YMargin(20),
+          Text(
+            'Four digit pin',
+            style: TextStyle(
+                fontSize: 15,
+                color: darkBG,
+                fontWeight: FontWeight.w600),
+          ),
+          YMargin(10),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 20.0),
+            child: PinField(pinController: null),
+          ),
+//          Container(
+//            decoration: BoxDecoration(
+//              boxShadow: [
+//                new BoxShadow(
+//                  offset: Offset(0, 8),
+//                  spreadRadius: -10,
+//                  color: darkBG.withOpacity(0.3),
+//                  blurRadius: 24,
+//                ),
+//              ],
+//            ),
+//            child: Material(
+//              child: TextFormField(
+//                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkBG, letterSpacing: 10.0),
+////          cursorColor: Colors.white,
+//                keyboardType: TextInputType.number,
+//                controller: null,
+//                validator: (value){
+//                  return null;
+//                },
+//
+//                inputFormatters: [
+//                  limiter.LengthLimitingTextInputFormatter(4)
+//                ],
+//
+//                decoration: InputDecoration(
+//
+//                  hintText: '****',
+//                  hintStyle: TextStyle(fontSize: 16),
+//                  contentPadding: EdgeInsets.all(10.0),
+//                  border: OutlineInputBorder(
+//                    borderRadius: BorderRadius.circular(20.0),
+//                    borderSide: BorderSide(color: Colors.transparent,),
+//                  ),
+//                  enabledBorder: OutlineInputBorder(
+//                    borderSide: BorderSide(color: Colors.transparent,),
+//                    borderRadius: BorderRadius.circular(20.0),
+//                  ),
+//
+//                  focusedBorder: OutlineInputBorder(
+//                    borderSide: BorderSide(color: Colors.transparent,),
+//                    borderRadius: BorderRadius.circular(20.0),
+//                  ),
+//
+//                ),
+//              ),
+//            ),
+//          ),
+          YMargin(30),
+          Button(text: 'Continue', onPressed: (){
+            _pageController.animateToPage(_currentPage + 1,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.linearToEaseOut);
+          }, height: 50,),
+          YMargin(10),
+          FlatButton(
+            splashColor: lightAccent.withOpacity(0.2),
+            onPressed: (){
+              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
+                  curve: Curves.linearToEaseOut);
+            },
+            child: Text(
+              'Back',
+              style: TextStyle(
+                color: darkBG,
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+
+  Widget _profile(){
+    return Padding(
+      padding: const EdgeInsets.all(15.0).add(
+        EdgeInsets.only(left: 5, right: 5),
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Create profile',
+                style: TextStyle(
+                  color: darkBG,
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Image.asset('assets/images/Findr_logo.png',
+                  height: 30.0, width: 30.0),
+            ],
+          ),
+          YMargin(80),
+          Center(child: ProfilePicture(onPressed: (){}, showCamera: true,),),
+          YMargin(20),
+          Text(
+            'Full name',
+            style: TextStyle(
+                fontSize: 15,
+                color: darkBG,
+                fontWeight: FontWeight.w600),
+          ),
+          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
+          YMargin(30),
+          Button(text: 'Done', onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
+          }, height: 50,),
+          YMargin(10),
+          FlatButton(
+            splashColor: lightAccent.withOpacity(0.2),
+            onPressed: (){
+              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
+                  curve: Curves.linearToEaseOut);
+            },
+            child: Text(
+              'Back',
+              style: TextStyle(
+                color: darkBG,
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+
 
 
         ],
@@ -138,67 +395,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _onBoarding1(){
-    return Padding(
-        padding: const EdgeInsets.all(15.0).add(EdgeInsets.only(left: 5, right: 5)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Getting Started',
-                      style: TextStyle(
-                        color: darkBG,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.w600,),),
-                    Image.asset('assets/images/Findr_logo.png',
-                        height: 36.0, width: 36.0),
-                  ],
-                ),
-                YMargin(10),
-                Text(
-                  'Choose from the following options below',
-                  style: TextStyle(
-                      color: darkBG,
-                      fontSize: 12.0),
-                ),
-              ],
-            ),
-            YMargin(80),
-            Text(
-              'Register as',
-              style: TextStyle(
-                  color: darkBG,
-                  fontSize: 16.0),
-            ),
-            YMargin(40),
-            Button(onPressed: () {
-              _pageController.animateToPage(_currentPage + 1, duration: Duration(seconds: 1), curve: Curves.linearToEaseOut);
-            }, text: 'an agent', height: 50.0),
-            YMargin(20),
-            Button(onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>UserProfileScreen()));
-            },
-             text: 'a student', height: 50.0),
+  TextEditingController controller = TextEditingController();
+  Widget _onBoarding2() {
+    return Container(
+      color: Color(0xffe7e7e7),
+      child: Column(
+        children: <Widget>[
+//        PinField(pinController: null),
+          YMargin(10),
+//        ProfilePicture(onPressed: (){},showCamera: true,),
 
+          HouseItem(),
 
-          ],
-        ),
-      );
-  }
-
-  Widget _onBoarding2(){
-    return Column(
-      children: <Widget>[
-        PinField(pinController: null),
-        YMargin(10),
-        ProfilePicture(onPressed: (){},showCamera: true,),
-      ],
+          YMargin(10),
+          Container(
+              padding: EdgeInsets.all(15),
+              color: darkAccent,
+              child: SearchField(searchController: controller)),
+        ],
+      ),
     );
   }
-
 }
