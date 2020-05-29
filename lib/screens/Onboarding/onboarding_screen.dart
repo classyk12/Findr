@@ -3,14 +3,11 @@ import 'package:findr/screens/agent_verification_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
-import 'package:findr/widgets/house_item.dart';
 import 'package:findr/widgets/phone_field.dart';
 import 'package:findr/widgets/pin_field.dart';
 import 'package:findr/widgets/profile_picture.dart';
-import 'package:findr/widgets/search_field.dart';
 import 'package:findr/widgets/text_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' as limiter;
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -395,25 +392,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  TextEditingController controller = TextEditingController();
-  Widget _onBoarding2() {
-    return Container(
-      color: Color(0xffe7e7e7),
-      child: Column(
-        children: <Widget>[
-//        PinField(pinController: null),
-          YMargin(10),
-//        ProfilePicture(onPressed: (){},showCamera: true,),
+ // TextEditingController controller = TextEditingController();
+//   Widget _onBoarding2() {
+//     return Container(
+//       color: Color(0xffe7e7e7),
+//       child: Column(
+//         children: <Widget>[
+// //        PinField(pinController: null),
+//           YMargin(10),
+// //        ProfilePicture(onPressed: (){},showCamera: true,),
 
-          HouseItem(),
+//           HouseItem(),
 
-          YMargin(10),
-          Container(
-              padding: EdgeInsets.all(15),
-              color: darkAccent,
-              child: SearchField(searchController: controller)),
-        ],
-      ),
-    );
-  }
+//           YMargin(10),
+//           Container(
+//               padding: EdgeInsets.all(15),
+//               color: darkAccent,
+//               child: SearchField(searchController: controller)),
+//         ],
+//       ),
+//     );
+//   }
 }

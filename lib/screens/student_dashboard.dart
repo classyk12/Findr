@@ -20,6 +20,7 @@ class _StudentDashboardState extends State<StudentDashboardScreen>{
         title: SearchField(searchController: TextEditingController()),
       ),
         drawer: StudentDrawer(),
+        
         body: Padding(padding: EdgeInsets.all(15.0).add(EdgeInsets.only(left: 5, right: 5)),
         child: ListView.builder(
           itemCount: 10,

@@ -1,13 +1,11 @@
-import 'package:findr/screens/Accounts/student_profile.dart';
+
 import 'package:findr/screens/Onboarding/onboarding_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
-import 'package:findr/widgets/password_input.dart';
 import 'package:findr/widgets/phone_field.dart';
 import 'package:findr/widgets/pin_field.dart';
-import 'package:findr/widgets/text_input.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 

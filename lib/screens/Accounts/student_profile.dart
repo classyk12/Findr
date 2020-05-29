@@ -12,7 +12,7 @@ class StudentProfileScreen extends StatefulWidget {
 }
 
 class _StudentProfileScreenState extends State<StudentProfileScreen> {
-  bool _isVerified = true;
+ // bool _isVerified = true;
 
   @override
   Widget build(BuildContext context) {

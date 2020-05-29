@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:findr/utils/margin.dart';
-import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 
 class UploadButton extends StatelessWidget{

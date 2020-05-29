@@ -1,7 +1,9 @@
-import 'package:findr/screens/login_screen.dart';
+
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
+import 'package:findr/widgets/empty_state.dart';
 import 'package:findr/widgets/file_upload_button.dart';
+import 'package:findr/widgets/loader.dart';
 import 'package:flutter/material.dart';
 
 class AgentVerificationPage extends StatelessWidget {
@@ -59,7 +61,8 @@ class AgentVerificationPage extends StatelessWidget {
               child: FlatButton(
                 splashColor: lightAccent.withOpacity(0.2),
                 onPressed: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => EmptyState()));
                 },
                 child: Text(
                   'Skip',

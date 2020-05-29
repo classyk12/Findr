@@ -46,6 +46,12 @@ ThemeData lightTheme = ThemeData(
   ),
 );
 
+TextStyle sideBarTextStyle = TextStyle(
+  fontSize: 15,
+  color: Colors.white,
+  fontWeight: FontWeight.w500
+);
+
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   backgroundColor: darkBG,

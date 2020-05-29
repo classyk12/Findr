@@ -1,3 +1,4 @@
+import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/phone_field.dart';
@@ -131,7 +132,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: FlatButton(
                 child: Text('Cancel',
                     style: TextStyle(color: Colors.red, fontSize: 16)),
-                onPressed: () {},
+                onPressed: () {
+
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+                },
               ))
             ],
           ),
