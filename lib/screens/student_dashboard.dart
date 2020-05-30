@@ -3,6 +3,7 @@ import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/house_item.dart';
 import 'package:findr/widgets/search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 
 class StudentDashboardScreen extends StatefulWidget{
 
@@ -18,10 +19,14 @@ class _StudentDashboardState extends State<StudentDashboardScreen>{
         backgroundColor: darkAccent,
         iconTheme: new IconThemeData(color: Colors.white),
         title: SearchField(searchController: TextEditingController()),
+        brightness: Brightness.dark,
       ),
-        drawer: StudentDrawer(),
+        drawer: StudentDrawer(title: 'Dashboard'),
+//        floatingActionButton: FloatingActionButton(onPressed: (){}, child: Icon(LineIcons.plus),),
+//        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         
-        body: Padding(padding: EdgeInsets.all(15.0).add(EdgeInsets.only(left: 5, right: 5)),
+        body: Padding(
+          padding: EdgeInsets.only(left: 20, right: 20, top: 15),
         child: ListView.builder(
           itemCount: 10,
             shrinkWrap: true,

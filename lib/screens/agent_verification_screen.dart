@@ -56,7 +56,7 @@ class AgentVerificationPage extends StatelessWidget {
             ),
             YMargin(10),
             UploadButton(onPressed: (){},),
-            YMargin(10),
+            YMargin(30),
             Center(
               child: FlatButton(
                 splashColor: lightAccent.withOpacity(0.2),

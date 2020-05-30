@@ -20,13 +20,16 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        iconTheme: new IconThemeData(color: Colors.white),
+        backgroundColor: darkAccent,
+//        backgroundColor: Colors.transparent,
         elevation: 0,
 //        automaticallyImplyLeading: false,
         centerTitle: false,
-        title: Text('Profile'),
+        brightness: Brightness.dark,
+        title: Text('Profile', style: TextStyle(color: Colors.white),),
       ),
-      drawer: StudentDrawer(),
+      drawer: StudentDrawer(title: 'Profile'),
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: ListView(

@@ -15,6 +15,7 @@ class ProfilePicture extends StatelessWidget{
     return Container(
       width: 120,
       height: 120,
+
 //      constraints: BoxConstraints(maxWidth: 120, maxHeight: 120),
       child: Stack(
         children: <Widget>[
