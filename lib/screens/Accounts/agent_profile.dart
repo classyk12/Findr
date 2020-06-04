@@ -210,6 +210,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                 )
               ]),
             ),
+            YMargin(5),
 
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
@@ -231,7 +232,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     ],
                   ),
 
-                  YMargin(10),
+                  YMargin(20),
 
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -248,7 +249,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                 ],
               ),
             ),
-
+            YMargin(6),
 
             Divider(
               color: Colors.grey[600],

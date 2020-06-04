@@ -1,3 +1,4 @@
+import 'package:findr/screens/agent_details_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class HouseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6))
       ),
@@ -142,7 +143,10 @@ class HouseItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (_)=> AgentDetailsScreen()));
+
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Contact',

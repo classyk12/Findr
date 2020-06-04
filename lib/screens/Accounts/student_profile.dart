@@ -146,6 +146,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               ]),
             ),
 
+            YMargin(10),
             Padding(
               padding: const EdgeInsets.only(left: 30.0, right: 15.0, top: 10.0),
               child: Column(
