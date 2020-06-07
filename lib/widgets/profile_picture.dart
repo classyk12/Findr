@@ -6,21 +6,22 @@ class ProfilePicture extends StatelessWidget{
 
   final Function() onPressed;
   final bool showCamera;
+  final double radius;
 
 
-  ProfilePicture({@required this.onPressed, this.showCamera = false});
+  ProfilePicture({@required this.onPressed, this.showCamera = false, this.radius = 60});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 120,
+      width: (radius * 2),
+      height: (radius * 2),
 
 //      constraints: BoxConstraints(maxWidth: 120, maxHeight: 120),
       child: Stack(
         children: <Widget>[
           CircleAvatar(
-            radius: 60,
+            radius: radius,
             backgroundImage: NetworkImage('https://via.placeholder.com/150'),
           ),
 

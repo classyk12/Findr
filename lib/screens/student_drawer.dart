@@ -1,7 +1,9 @@
 import 'package:findr/screens/Accounts/student_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
+import 'package:findr/screens/about_us_screen.dart';
 import 'package:findr/screens/bookmark_screen.dart';
 import 'package:findr/screens/favourite_screen.dart';
+import 'package:findr/screens/setting_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
@@ -199,67 +201,38 @@ class StudentDrawer extends StatelessWidget {
                           ),
                         ),
 
-                        Container(
-                          color: title == titles[4] ? Colors.white : darkAccent,
-                          padding: const EdgeInsets.only(top: 5, left: 30,  bottom: 5),
-                          child: InkWell(
-                            onTap: () {
-                              if(title != titles[4]) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        StudentDashboardScreen()));
-                              }else{
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.block, color: title != titles[4] ? Colors.white : darkAccent),
-                                XMargin(15),
-                                Text(
-                                  titles[4],
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: title != titles[4] ? Colors.white : darkAccent,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                )
-                              ],
-                              // child: Text('Dashboard')),
-                            ),
-                          ),
-                        ),
+//                        Container(
+//                          color: title == titles[4] ? Colors.white : darkAccent,
+//                          padding: const EdgeInsets.only(top: 5, left: 30,  bottom: 5),
+//                          child: InkWell(
+//                            onTap: () {
+//                              if(title != titles[4]) {
+//                                Navigator.of(context).push(MaterialPageRoute(
+//                                    builder: (BuildContext context) =>
+//                                        StudentDashboardScreen()));
+//                              }else{
+//                                Navigator.pop(context);
+//                              }
+//                            },
+//                            child: Row(
+//                              children: <Widget>[
+//                                Icon(Icons.block, color: title != titles[4] ? Colors.white : darkAccent),
+//                                XMargin(15),
+//                                Text(
+//                                  titles[4],
+//                                  style: TextStyle(
+//                                      fontSize: 15,
+//                                      color: title != titles[4] ? Colors.white : darkAccent,
+//                                      fontWeight: FontWeight.w500
+//                                  ),
+//                                )
+//                              ],
+//                              // child: Text('Dashboard')),
+//                            ),
+//                          ),
+//                        ),
 
-                        Container(
-                          color: title == titles[5] ? Colors.white : darkAccent,
-                          padding: const EdgeInsets.only(top: 5, left: 30,  bottom: 5),
-                          child: InkWell(
-                            onTap: () {
-                              if(title != titles[5]) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        StudentDashboardScreen()));
-                              }else{
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(LineIcons.users, color: title != titles[5] ? Colors.white : darkAccent,),
-                                XMargin(15),
-                                Text(
-                                  titles[5],
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: title != titles[5] ? Colors.white : darkAccent,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                )
-                              ],
-                              // child: Text('Dashboard')),
-                            ),
-                          ),
-                        ),
+
 
                         Container(
                           color: title == titles[6] ? Colors.white : darkAccent,
@@ -269,7 +242,7 @@ class StudentDrawer extends StatelessWidget {
                               if(title != titles[6]) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        StudentDashboardScreen()));
+                                        SettingScreen()));
                               }else{
                                 Navigator.pop(context);
                               }
@@ -292,36 +265,66 @@ class StudentDrawer extends StatelessWidget {
                           ),
                         ),
 
-                        Container(
-                          color: title == titles[7] ? Colors.white : darkAccent,
-                          padding: const EdgeInsets.only(top: 5, left: 30,  bottom: 5),
-                          child: InkWell(
-                            onTap: () {
-                              if(title != titles[7]) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        StudentDashboardScreen()));
-                              }else{
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(LineIcons.question_circle, color: title != titles[7] ? Colors.white : darkAccent,),
-                                XMargin(15),
-                                Text(
-                                  titles[7],
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: title != titles[7] ? Colors.white : darkAccent,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                )
-                              ],
-                              // child: Text('Dashboard')),
-                            ),
-                          ),
-                        ),
+//                        Container(
+//                          color: title == titles[7] ? Colors.white : darkAccent,
+//                          padding: const EdgeInsets.only(top: 5, left: 30,  bottom: 5),
+//                          child: InkWell(
+//                            onTap: () {
+//                              if(title != titles[7]) {
+//                                Navigator.of(context).push(MaterialPageRoute(
+//                                    builder: (BuildContext context) =>
+//                                        StudentDashboardScreen()));
+//                              }else{
+//                                Navigator.pop(context);
+//                              }
+//                            },
+//                            child: Row(
+//                              children: <Widget>[
+//                                Icon(LineIcons.question_circle, color: title != titles[7] ? Colors.white : darkAccent,),
+//                                XMargin(15),
+//                                Text(
+//                                  titles[7],
+//                                  style: TextStyle(
+//                                      fontSize: 15,
+//                                      color: title != titles[7] ? Colors.white : darkAccent,
+//                                      fontWeight: FontWeight.w500
+//                                  ),
+//                                )
+//                              ],
+//                              // child: Text('Dashboard')),
+//                            ),
+//                          ),
+//                        ),
+
+//                        Container(
+//                          color: title == titles[5] ? Colors.white : darkAccent,
+//                          padding: const EdgeInsets.only(top: 5, left: 30,  bottom: 5),
+//                          child: InkWell(
+//                            onTap: () {
+//                              if(title != titles[5]) {
+//                                Navigator.of(context).push(MaterialPageRoute(
+//                                    builder: (BuildContext context) =>
+//                                        AboutUsScreen()));
+//                              }else{
+//                                Navigator.pop(context);
+//                              }
+//                            },
+//                            child: Row(
+//                              children: <Widget>[
+//                                Icon(LineIcons.users, color: title != titles[5] ? Colors.white : darkAccent,),
+//                                XMargin(15),
+//                                Text(
+//                                  titles[5],
+//                                  style: TextStyle(
+//                                      fontSize: 15,
+//                                      color: title != titles[5] ? Colors.white : darkAccent,
+//                                      fontWeight: FontWeight.w500
+//                                  ),
+//                                )
+//                              ],
+//                            ),
+//                          ),
+//                        ),
                       ],
                     ),
                   ),
