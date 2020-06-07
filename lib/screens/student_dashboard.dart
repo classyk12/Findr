@@ -27,6 +27,7 @@ class _StudentDashboardState extends State<StudentDashboardScreen>{
         
         body: Padding(
           padding: EdgeInsets.only(left: 20, right: 20, top: 15),
+          
         child: ListView.builder(
           itemCount: 10,
             shrinkWrap: true,
