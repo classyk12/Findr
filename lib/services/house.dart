@@ -25,12 +25,10 @@ class HouseService {
           //add each converted content to the list defined above
           houseList.add(HouseList.jsonConvert(item));
         }
-        return BaseResponse<List<HouseList>>(data: houseList);
+        return BaseResponse<List<HouseList>>.completed(data: houseList);
       }
-      return BaseResponse<List<HouseList>>(
-          status: true, message: 'An error occured!');
-    }).catchError((_) => BaseResponse<List<HouseList>>(
-        status: true, message: 'An error occured!', data: null));
+      return BaseResponse<List<HouseList>>.error(message: 'An error occured!');
+    }).catchError((_) => BaseResponse<List<HouseList>>.error( message: 'An error occured!'));
   }
 
 
@@ -41,11 +39,10 @@ class HouseService {
         //convert data to a map type
         final jsonData = json.decode(data.body);
         final house = HouseDetail.jsonConvert(jsonData);
-        return BaseResponse<HouseDetail>(status: true, message: 'retrieved successfully', data: house);
+        return BaseResponse<HouseDetail>.completed(message: 'retrieved successfully', data: house);
       }
-      return BaseResponse<HouseDetail>(status: false, message: 'An error occured!', data: null);
-    }).catchError((_) => BaseResponse<HouseDetail>(
-        status: true, message: 'An error occured!', data: null));
+      return BaseResponse<HouseDetail>.error(message: 'An error occured!');
+    }).catchError((_) => BaseResponse<HouseDetail>.error(message: 'An error occured!'));
   }
 
  Future<BaseResponse<HouseDetail>> create(HouseFormModel model) {
@@ -58,11 +55,11 @@ class HouseService {
         //converts string response to object
         final jsonData = json.decode(data.body);
         final house = HouseDetail.jsonConvert(jsonData);
-        return BaseResponse<HouseDetail>(status: true, message: 'Advert created!', data:house);
+        return BaseResponse<HouseDetail>.completed(message: 'Advert created!', data:house);
       }
-      return BaseResponse<HouseDetail>(status: true, message: 'An error occured!', data: null);
+      return BaseResponse<HouseDetail>.error(message: 'An error occured!');
     }).catchError((_) =>
-            BaseResponse<HouseDetail>(status: true, message: 'An error occured!', data: null));
+            BaseResponse<HouseDetail>.completed(message: 'An error occured!'));
   }
 
    Future<BaseResponse<bool>> delete(int id) {
@@ -71,14 +68,14 @@ class HouseService {
         .then((data) {
       //check if api call returned success
       if (data.statusCode == 200 || data.statusCode == 204) {
-        return BaseResponse<bool>(status: true, message: 'Done!');
+        return BaseResponse<bool>.completed(message: 'Done!', data: true);
       }
-      return BaseResponse<bool>(status: true, message: 'An error occured!');
+      return BaseResponse<bool>.error(message: 'An error occured!');
     }).catchError((_) =>
-            BaseResponse<bool>(status: true, message: 'An error occured!'));
+            BaseResponse<bool>.error(message: 'An error occured!'));
   }
 
-   Future<BaseResponse<bool>> update (int id, HouseFormModel model) {
+   Future<BaseResponse<HouseDetail>> update (int id, HouseFormModel model) {
     return _http
         .put('$endpoint/$id', 
             headers: headers, body: json.encode(model.jsonConvert()))
@@ -88,11 +85,11 @@ class HouseService {
         //converts string response to object
         final jsonData = json.decode(data.body);
         final house = HouseDetail.jsonConvert(jsonData);
-        return BaseResponse<bool>(status: true, message: 'update success',data: house);
+        return BaseResponse<HouseDetail>.completed(message: 'update success',data: house);
       }
-      return BaseResponse<bool>(status: true, message: 'An error occured!');
+      return BaseResponse<HouseDetail>.error(message: 'An error occured!');
     }).catchError((_) =>
-            BaseResponse<bool>(status: true, message: 'An error occured!'));
+            BaseResponse<HouseDetail>.error(message: 'An error occured!'));
   }
 
    Future<BaseResponse<List<HouseList>>> filter(HouseFilter model) {
@@ -109,11 +106,11 @@ class HouseService {
           //add each converted content to the list defined above
           houseList.add(HouseList.jsonConvert(item));
         }
-        return BaseResponse<List<HouseList>>(status: true, message: 'retrieved successfully', data:houseList);
+        return BaseResponse<List<HouseList>>.completed(message: 'retrieved successfully', data:houseList);
       }
-      return BaseResponse<HouseList>(status: true, message: 'An error occured!', data: null);
+      return BaseResponse<HouseList>.error(message: 'An error occured!');
     }).catchError((_) =>
-            BaseResponse<HouseList>(status: true, message: 'An error occured!', data: null));
+            BaseResponse<HouseList>.error(message: 'An error occured!'));
   }
 
    Future<BaseResponse<Rating>> rate(int houseId,RateAgentModel model) {
@@ -127,11 +124,11 @@ class HouseService {
         final jsonData = json.decode(data.body);
         var response = Rating.jsonConvert(jsonData);
         
-        return BaseResponse<Rating>(status: true, message: 'retrieved successfully', data:response);
+        return BaseResponse<Rating>.completed(message: 'retrieved successfully', data:response);
       }
-      return BaseResponse<Rating>(status: true, message: 'An error occured!', data: null);
+      return BaseResponse<Rating>.error(message: 'An error occured!');
     }).catchError((_) =>
-            BaseResponse<Rating>(status: true, message: 'An error occured!', data: null));
+            BaseResponse<Rating>.error(message: 'An error occured!'));
   }
 
 

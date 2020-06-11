@@ -1,7 +1,15 @@
 class BaseResponse<T> {
-  final bool status;
-  final String message;
- final Object data; 
+  Status status;
+  String message;
+  T data;
 
  BaseResponse({this.status, this.message, this.data});
+
+  BaseResponse.loading({this.message}) : status = Status.LOADING;
+  BaseResponse.completed({this.data, this.message}) : status = Status.COMPLETED;
+  BaseResponse.error({this.message,}) : status = Status.ERROR;
+
+
 }
+
+enum Status { LOADING, COMPLETED, ERROR }

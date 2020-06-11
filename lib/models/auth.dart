@@ -11,7 +11,7 @@ class RegisterModel {
   RegisterModel({this.fullName,this.phoneNumber,this.password,this.email,this.userType});
 
   //use this to convert raw text to json
-  Map<String, dynamic> jsonConvert() {
+  Map<String, dynamic> toMap() {
     return {"fullname": fullName, "phone_number": phoneNumber, "password": password, "email":email, "user_type":userType};
   }
 }
@@ -48,7 +48,7 @@ class LoginModel {
  LoginModel({this.phoneNumber, this.password});
 
   //use this to convert raw text to json
-  Map<String, dynamic> jsonConvert() {
+  Map<String, dynamic> toMap() {
     return {"phone_number": phoneNumber, "password": password};
   }
 

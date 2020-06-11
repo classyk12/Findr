@@ -1,3 +1,6 @@
+import 'package:findr/models/auth.dart';
+import 'package:findr/models/base_response.dart';
+import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/screens/Accounts/agent_profile.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
 import 'package:findr/utils/margin.dart';
@@ -8,6 +11,8 @@ import 'package:findr/widgets/pin_field.dart';
 import 'package:findr/widgets/profile_picture.dart';
 import 'package:findr/widgets/text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -15,9 +20,11 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+
   final int _numPages = 3;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
@@ -39,6 +46,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
+
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController pinController = TextEditingController();
+  String userType = '';
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +193,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           YMargin(40),
           Button(
               onPressed: () {
+                setState(() {
+                  userType = 'Agent';
+                });
                 _pageController.animateToPage(_currentPage + 1,
                     duration: Duration(milliseconds: 300),
                     curve: Curves.linearToEaseOut);
@@ -190,6 +205,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           YMargin(20),
           Button(
               onPressed: () {
+                setState(() {
+                  userType = 'Student';
+                });
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => AgentProfileScreen()));
               },
@@ -232,8 +250,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 fontWeight: FontWeight.w600),
           ),
           PhoneField(hintText: '(0) 7089175605', onChanged: (value){
-
-          }),
+            phoneNumberController.text = value;
+          }, controller:  phoneNumberController,),
           YMargin(20),
           Text(
             'E-mail',
@@ -242,7 +260,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 color: darkBG,
                 fontWeight: FontWeight.w600),
           ),
-          TextInput(controller: null, hintText: 'Adekunle_ciroma@zmail.ng',),
+          TextInput(controller: emailController, hintText: 'Adekunle_ciroma@zmail.ng',),
           YMargin(20),
           Text(
             'Four digit pin',
@@ -254,7 +272,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           YMargin(10),
           Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 20.0),
-            child: PinField(pinController: null),
+            child: PinField(pinController: pinController),
           ),
 //          Container(
 //            decoration: BoxDecoration(
@@ -305,11 +323,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 //            ),
 //          ),
           YMargin(30),
-          Button(text: 'Continue', onPressed: (){
-            _pageController.animateToPage(_currentPage + 1,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.linearToEaseOut);
-          }, height: 50,),
+          Consumer<AuthProvider>(
+            builder: (ctx, provider, widget) => Button(text: 'Continue', onPressed: () async {
+
+              showDialog(context: ctx,
+                  builder: (ctx) => AlertDialog(
+                    content: SpinKitCircle(color: darkAccent),
+                  ));
+
+              RegisterModel registerModel = RegisterModel(phoneNumber: phoneNumberController.text, email: emailController.text,
+              password: pinController.text, fullName: 'Sample name', userType: userType);
+
+              BaseResponse<UserData> response = await provider.register(registerModel);
+
+              if(response.status == Status.COMPLETED){
+                print(response.message);
+                Navigator.pop(context);
+                _pageController.animateToPage(_currentPage + 1,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linearToEaseOut);
+              }else{
+                Navigator.pop(context);
+                print(response.message);
+              }
+
+
+            }, height: 50,),
+          ),
           YMargin(10),
           FlatButton(
             splashColor: lightAccent.withOpacity(0.2),
@@ -366,18 +406,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           TextInput(controller: null, hintText: 'Adekunle Ciroma',),
           YMargin(30),
-          Button(text: 'Done', onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
-          }, height: 50,),
+          Consumer<AuthProvider>(
+            builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
+              //show loading dialog
+
+
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
+            }, height: 50,),
+          ),
           YMargin(10),
           FlatButton(
             splashColor: lightAccent.withOpacity(0.2),
             onPressed: (){
-              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
-                  curve: Curves.linearToEaseOut);
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
+
+//              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
+//                  curve: Curves.linearToEaseOut);
             },
             child: Text(
-              'Back',
+              'Skip',
               style: TextStyle(
                 color: darkBG,
                 fontSize: 16.0,

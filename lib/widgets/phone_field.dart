@@ -113,7 +113,7 @@ class _SPhoneInputState extends State<PhoneField> {
                     widget.controller.text = num;
 
 //                String num = '$countryCode$phoneNumber';
-//                widget.onChanged(num);
+                widget.onChanged(num);
                   },
                   decoration: InputDecoration(
                     counterText: '',

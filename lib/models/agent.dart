@@ -28,10 +28,19 @@ class AgentInfo extends BaseModel {
         DateTime.parse(item['created_at']) ?? null,
        DateTime.parse(item['updated_at']) ?? null,
       // item['agentlistings']);
-       item['agentlistings'] != null
-          ? new List<AgentListing>.from(item['agentlistings'])
-          : null);
-  }
+      //  item['agentlistings'] != null
+      //     ? new List<AgentListing>.from(item['agentlistings'])
+      //     : null);
+ //}
+        item['agentlistings'] != null ? (item['agentlistings'] as List).map((i) => AgentListing.jsonConvert(i)).toList() : null
+//       item['agentlistings'] != null
+//          ? new List<AgentListing>.from(item['agentlistings'])
+//          : null
+          );
+//    //trying to see if we can set the value of both dates from json...i no sure of this one
+    //  ..createdAt = DateTime.parse(item['created_at'])..updatedAt = DateTime.parse(item['updated_at']);
+}
+
 }
 
 class AgentListing extends BaseModel{
@@ -40,7 +49,7 @@ class AgentListing extends BaseModel{
   String houseArea;
   double price; 
 
-  AgentListing(id,this.houseType, this.houseArea, this.image, this.price, createdAt);
+  AgentListing( id,  this.houseType, this.houseArea, this.image, this.price, createdAt);
 
    //use this to convert json to list/object
   factory AgentListing.jsonConvert(Map<String, dynamic> item) {
@@ -50,7 +59,9 @@ class AgentListing extends BaseModel{
         item['image'],
         item['house_area'],
         item['price'],
-        DateTime.parse(item['created_at']) ?? null);
+        DateTime.parse(item['created_at']) ?? null)
+    ..createdAt = DateTime.parse(item['created_at'])
+    ..updatedAt = DateTime.parse(item['updated_at']);
 }
 
 }
