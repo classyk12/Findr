@@ -27,7 +27,10 @@ class AgentInfo extends BaseModel {
         item['user_type'],
         DateTime.parse(item['created_at']) ?? null,
        DateTime.parse(item['updated_at']) ?? null,
-       item['agentlistings']);
+      // item['agentlistings']);
+       item['agentlistings'] != null
+          ? new List<AgentListing>.from(item['agentlistings'])
+          : null);
 }
 
 }
