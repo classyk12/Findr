@@ -1,6 +1,5 @@
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
-import 'package:findr/widgets/button.dart';
 import 'package:findr/widgets/house_item.dart';
 import 'package:findr/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';

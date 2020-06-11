@@ -1,5 +1,4 @@
 import 'package:findr/screens/Onboarding/onboarding_screen.dart';
-import 'package:findr/screens/login_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/loader.dart';

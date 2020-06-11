@@ -1,6 +1,5 @@
 import 'package:findr/screens/Accounts/student_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
-import 'package:findr/screens/about_us_screen.dart';
 import 'package:findr/screens/bookmark_screen.dart';
 import 'package:findr/screens/favourite_screen.dart';
 import 'package:findr/screens/setting_screen.dart';

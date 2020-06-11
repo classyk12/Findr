@@ -3,7 +3,6 @@ import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/empty_state.dart';
 import 'package:findr/widgets/file_upload_button.dart';
-import 'package:findr/widgets/loader.dart';
 import 'package:flutter/material.dart';
 
 class AgentVerificationPage extends StatelessWidget {

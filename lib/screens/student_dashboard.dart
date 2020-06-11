@@ -3,7 +3,6 @@ import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/house_item.dart';
 import 'package:findr/widgets/search_field.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 
 class StudentDashboardScreen extends StatefulWidget{
 
