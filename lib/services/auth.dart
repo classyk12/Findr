@@ -2,53 +2,58 @@ import 'dart:convert';
 
 import 'package:findr/models/auth.dart';
 import 'package:findr/models/base_response.dart';
-import 'package:http/http.dart' as _http;
+import 'package:findr/services/api_helper.dart';
+//import 'package:http/http.dart' as _http;
 
 
 class AuthService{
-  static const headers = {'Content- Type' : 'application/json'};
-  String endpoint;
+  Map<String, String> headers =
+  {
+    'Content-Type' : 'application/json'
+    // 'Authorization' : access_token
+  };
+  ApiHelper _apiHelper = ApiHelper();
 
-  AuthService(){
-    endpoint = ""; //endpoint here
-  }
+//  AuthService(){
+//    endpoint = ""; //endpoint here
+//  }
 
   Future<BaseResponse<UserData>> register(RegisterModel model) async {
-      return await _http.post(endpoint,body: json.encode(model.jsonConvert()), headers: headers).then((result){
+      return await _apiHelper.post(endpoint: 'register',body: model.toMap(), header: headers).then((result){
         if(result.statusCode == 201){
 
           //testing to see the content of api response      
-        final jsonData = json.decode(result.body);
+        final jsonData = json.decode(result.body)['data'];
         final userdata = UserData.jsonConvert(jsonData);
          print(userdata);
-        return BaseResponse<UserData>(status: true, message: 'registration success', data: userdata);
+        return BaseResponse<UserData>.completed( message: 'registration success', data: userdata);
         }
 
         //todo: display api error message directly to user
-        return BaseResponse(status: false, message:"something went wrong", data:null);
+        return BaseResponse<UserData>.error(message:"something went wrong ${result.body}");
 
         //catch the error   
-       }).catchError((_) =>
-            BaseResponse(status: true, message: 'An error occured!', data: null));  
+       }).catchError((e) =>
+            BaseResponse<UserData>.error(message: e.toString()));
   }
 
   Future<BaseResponse<LoginResponse>> login(LoginModel model) async {
-      return await _http.post(endpoint,body: json.encode(model.jsonConvert()), headers: headers).then((result){
+      return await _apiHelper.post(endpoint: 'login',body: json.encode(model.toMap()), header: headers).then((result){
         if(result.statusCode == 200){
         final jsonData = json.decode(result.body);
         final response = LoginResponse.jsonConvert(jsonData);
         print(response);
         //response value will be stored in a shared preference or provider ......
 
-          return BaseResponse(status: true, message: "login success", data: response);
+          return BaseResponse<LoginResponse>.completed(message: "login success", data: response);
         }
 
         //todo: display api error message directly to user
-        return BaseResponse(status: false, message:"something went wrong", data: jsonDecode(result.body));
+        return BaseResponse<LoginResponse>.completed(message:"something went wrong", data: jsonDecode(result.body));
 
         //catch the error   
        }).catchError((_) =>
-            BaseResponse(status: true, message: 'An error occured!', data: null));  
+            BaseResponse<LoginResponse>.error(message: 'An error occurred!'));
   }
 
 }

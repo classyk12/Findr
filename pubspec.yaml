@@ -35,6 +35,9 @@ dependencies:
 
   pin_input_text_field: ^3.0.1
 
+    #  for model/change notifier
+  provider: 4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
