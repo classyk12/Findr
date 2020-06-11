@@ -31,8 +31,7 @@ class AgentInfo extends BaseModel {
        item['agentlistings'] != null
           ? new List<AgentListing>.from(item['agentlistings'])
           : null);
-}
-
+  }
 }
 
 class AgentListing extends BaseModel{
