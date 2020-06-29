@@ -1,3 +1,0 @@
-// class ErroHandler{
-//   static Error
-// }

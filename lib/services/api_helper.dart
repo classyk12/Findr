@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 class ApiHelper {
   final String _baseUrl = 'http://findrapi.herokuapp.com/api/v1/';
 
+
   Future<http.Response> get({String endpoint, dynamic header}) async {
     print('call api get request: $endpoint');
 
@@ -18,6 +19,7 @@ class ApiHelper {
     }
     return response;
   }
+
 
   Future<http.Response> post({String endpoint, dynamic body, header}) async {
     print('call api post request: $endpoint');

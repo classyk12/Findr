@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:findr/models/agent.dart';
 import 'package:findr/models/base_response.dart';
 import 'package:findr/services/api_helper.dart';
-//import 'package:http/http.dart' as _http;
 
 class AgentService{
 Map<String, String> headers =
@@ -11,13 +10,8 @@ Map<String, String> headers =
   'Content-Type' : 'application/json'
   // 'Authorization' : access_token
 };
+
 ApiHelper _apiHelper = ApiHelper();
-//  String endpoint;
-
-//  AgentService(){
-//    endpoint = "";
-//  }
-
 
 
     Future<BaseResponse<AgentInfo>> getById (int id) {
@@ -30,13 +24,11 @@ ApiHelper _apiHelper = ApiHelper();
         final agent = AgentInfo.jsonConvert(jsonData);
         print(agent); //sample to check what repsonse looks like
 
-        
-        //todo: iterate through the listings 
 
         return BaseResponse<AgentInfo>.completed(message: 'retrieved successfully', data: agent);
       }
-      return BaseResponse<AgentInfo>.error(message: 'An error occured!');
-    }).catchError((_) => BaseResponse<AgentInfo>.error(message: 'An error occured!'));
+      return BaseResponse<AgentInfo>.error(message: 'An error occured!', data: null);
+    }).catchError((_) => BaseResponse<AgentInfo>.error(message: 'An error occured!',data: null));
   }
 
 }
