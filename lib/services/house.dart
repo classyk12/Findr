@@ -5,9 +5,10 @@ import 'package:findr/models/house.dart';
 import 'package:findr/models/rating.dart';
 import 'package:findr/services/api_helper.dart';
 import "package:http/http.dart" as _http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HouseService {
-  Map<String, String> headers =
+  Map<String, String> _headers =
 {
   'Content-Type' : 'application/json'
   // 'Authorization' : access_token
@@ -16,29 +17,31 @@ String _endpoint = "houses";
 
  ApiHelper _apiHelper = ApiHelper();
   
-  Future<BaseResponse<List<HouseList>>> getHouses () {
-     headers['token'] = '';
-    return _apiHelper.get(endpoint: _endpoint, header: headers).then((data) {
+  Future<BaseResponse<List<HouseList>>> getHouses () async {
+      SharedPreferences pref = await  SharedPreferences.getInstance();
+      String token = pref.getString('token');
+     _headers['token'] = token;
+    return _apiHelper.get(endpoint: _endpoint, header: _headers).then((data) {
       //check if api call returned 200
       if (data.statusCode == 200) {
         //convert data to a map type
         final jsonData = json.decode(data.body);
         //convert the map into the actual real list of objects
-        final houseList = <HouseList>[];
-        for (var item in jsonData) {
+        final houseList = List<HouseList>();
+        for (var item in jsonData['data'] ?? []) {
           //add each converted content to the list defined above
           houseList.add(HouseList.jsonConvert(item));
         }
         return BaseResponse<List<HouseList>>.completed(data: houseList);
       }
-      return BaseResponse<List<HouseList>>.error(message: 'An error occured!', data: null);
+      return BaseResponse<List<HouseList>>.error(message: 'An error occurred!', data: null);
     }).catchError((_) => BaseResponse<List<HouseList>>.error( message: 'An error occured!', data: null));
   }
 
 
     Future<BaseResponse<HouseDetail>> getById (int id) {
-       headers['token'] = '';
-    return _apiHelper.get(endpoint:'$_endpoint/$id', header: headers).then((data) {
+       _headers['token'] = '';
+    return _apiHelper.get(endpoint:'$_endpoint/$id', header: _headers).then((data) {
       //check if api call returned 200
       if (data.statusCode == 200) {
         //convert data to a map type
@@ -53,7 +56,7 @@ String _endpoint = "houses";
  Future<BaseResponse<HouseDetail>> create(HouseFormModel model) {
     return _apiHelper
         .post(endpoint: _endpoint,
-            header: headers, body: json.encode(model.jsonConvert()))
+            header: _headers, body: json.encode(model.jsonConvert()))
         .then((data) {
       //check if api call returned 200
       if (data.statusCode == 201) {
@@ -69,7 +72,7 @@ String _endpoint = "houses";
 
    Future<BaseResponse<bool>> delete(int id) {
     return _apiHelper
-        .delete(endpoint:'$_endpoint?id=$id', header: headers)
+        .delete(endpoint:'$_endpoint?id=$id', header: _headers)
         .then((data) {
       //check if api call returned success
       if (data.statusCode == 200 || data.statusCode == 204) {
@@ -83,7 +86,7 @@ String _endpoint = "houses";
    Future<BaseResponse<HouseDetail>> update (int id, HouseFormModel model) {
     return _http
         .put('$_endpoint/$id', 
-            headers: headers, body: json.encode(model.jsonConvert()))
+            headers: _headers, body: json.encode(model.jsonConvert()))
         .then((data) {
       //check if api call returned success
       if (data.statusCode == 201 || data.statusCode == 200) {
@@ -100,7 +103,7 @@ String _endpoint = "houses";
    Future<BaseResponse<List<HouseList>>> filter(HouseFilter model) {
     return _http
         .post(_endpoint,
-            headers: headers, body: json.encode(model.jsonConvert()))
+            headers: _headers, body: json.encode(model.jsonConvert()))
         .then((data) {
       //check if api call returned 200
       if (data.statusCode == 201) {
@@ -121,7 +124,7 @@ String _endpoint = "houses";
    Future<BaseResponse<Rating>> rate(int houseId,RateAgentModel model) {
     return _http
         .post('$_endpoint/' + houseId.toString() ,
-            headers: headers, body: json.encode(model.jsonConvert()))
+            headers: _headers, body: json.encode(model.jsonConvert()))
         .then((data) {
       //check if api call returned 200
       if (data.statusCode == 201) {

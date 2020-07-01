@@ -3,6 +3,7 @@ import 'package:findr/models/base_response.dart';
 import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/screens/Accounts/agent_profile.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
+import 'package:findr/screens/login_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
@@ -50,6 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pinController = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
   String userType = '';
 
   @override
@@ -208,8 +210,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 setState(() {
                   userType = 'Student';
                 });
+//                Navigator.push(context,
+//                    MaterialPageRoute(builder: (_) => AgentProfileScreen()));
+
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => AgentProfileScreen()));
+                    MaterialPageRoute(builder: (_) => LoginScreen()));
               },
               text: 'a student',
               height: 50.0),
@@ -242,6 +247,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           YMargin(80),
+          Text(
+            'Full name',
+            style: TextStyle(
+                fontSize: 15,
+                color: darkBG,
+                fontWeight: FontWeight.w600),
+          ),
+          TextInput(controller: fullNameController, hintText: 'Adekunle Ciroma',),
+          YMargin(20),
           Text(
             'Phone number',
             style: TextStyle(
@@ -328,11 +342,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               showDialog(context: ctx,
                   builder: (ctx) => AlertDialog(
-                    content: SpinKitCircle(color: darkAccent),
+                    content: Container(child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SpinKitCircle(color: darkAccent),
+                      ],
+                    )),
                   ));
 
               RegisterModel registerModel = RegisterModel(phoneNumber: phoneNumberController.text, email: emailController.text,
-              password: pinController.text, fullName: 'Sample name', userType: userType);
+              password: pinController.text, fullName: fullNameController.text, userType: userType);
 
               BaseResponse<UserData> response = await provider.register(registerModel);
 
@@ -396,15 +417,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           YMargin(80),
           Center(child: ProfilePicture(onPressed: (){}, showCamera: true,),),
-          YMargin(20),
-          Text(
-            'Full name',
-            style: TextStyle(
-                fontSize: 15,
-                color: darkBG,
-                fontWeight: FontWeight.w600),
-          ),
-          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
+//          YMargin(20),
+//          Text(
+//            'Full name',
+//            style: TextStyle(
+//                fontSize: 15,
+//                color: darkBG,
+//                fontWeight: FontWeight.w600),
+//          ),
+//          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
           YMargin(30),
           Consumer<AuthProvider>(
             builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {

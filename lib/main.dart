@@ -1,4 +1,5 @@
 import 'package:findr/providers/auth_provider.dart';
+import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/Accounts/agent_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
 import 'package:findr/screens/login_screen.dart';
@@ -6,9 +7,13 @@ import 'package:findr/screens/splash_screen.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:findr/services/service_locator.dart';
 
 
-void main() => runApp(MyApp());
+void main() {
+  setupServiceLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -17,10 +22,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_)=> AuthProvider()),
+        ChangeNotifierProvider<HouseProvider>(create: (_)=> HouseProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Findr',
         theme: lightTheme,
 //      darkTheme: darkTheme,
         initialRoute: '/',

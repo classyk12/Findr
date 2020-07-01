@@ -81,7 +81,7 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if(title != titles[0]) {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         StudentDashboardScreen()));
                               }else{
@@ -113,7 +113,7 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if(title != titles[1]) {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         StudentProfileScreen()));
                               }else{
@@ -144,7 +144,7 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if(title != titles[2]) {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         BookmarkScreen()));
                               }else{
@@ -175,7 +175,7 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if(title != titles[3]) {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         FavouriteScreen()));
                               }else{
@@ -239,7 +239,7 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if(title != titles[6]) {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         SettingScreen()));
                               }else{
@@ -335,7 +335,7 @@ class StudentDrawer extends StatelessWidget {
                         top: 40, left: 30, bottom: 10),
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (BuildContext context) => LandingScreen()));
                       },
                       child: Row(

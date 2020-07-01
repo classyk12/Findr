@@ -2,10 +2,11 @@ import 'package:findr/models/auth.dart';
 import 'package:findr/models/base_response.dart';
 import 'package:findr/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:findr/services/service_locator.dart';
 
 class AuthProvider extends ChangeNotifier{
 
-  AuthService _authService = AuthService();
+  AuthService _authService = locator<AuthService>();
 
   BaseResponse<LoginResponse> loginResponse = BaseResponse<LoginResponse>.completed();
   BaseResponse<UserData> registerResponse = BaseResponse<UserData>.completed();
@@ -30,5 +31,7 @@ class AuthProvider extends ChangeNotifier{
 
     return registerResponse;
   }
+
+
 
 }

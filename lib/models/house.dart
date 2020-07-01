@@ -6,17 +6,18 @@ class HouseList extends BaseModel {
       String houseArea;
       int price;
 
-     HouseList(id,this.houseType,this.image, this.houseArea, this.price, createdAt);
+     HouseList(this.houseType,this.image, this.houseArea, this.price);
 
      //use this to convert json to list/object
   factory HouseList.jsonConvert(Map<String, dynamic> item) {
     return HouseList(
-        item['id'],
         item['house_type'],
         item['image'],
         item['price'],
-        item['house_area'],
-       DateTime.parse(item['created_at']),);
+        item['house_area'])
+    ..id = item['id']
+    ..createdAt = DateTime.parse(item['created_at']);
+
 }
 
 }

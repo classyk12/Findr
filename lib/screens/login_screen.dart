@@ -1,4 +1,8 @@
 
+import 'package:findr/models/auth.dart';
+import 'package:findr/models/base_response.dart';
+import 'package:findr/providers/auth_provider.dart';
+import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/Onboarding/onboarding_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
@@ -8,8 +12,16 @@ import 'package:findr/widgets/phone_field.dart';
 import 'package:findr/widgets/pin_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
+
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController pinController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +78,9 @@ class LoginScreen extends StatelessWidget {
               style: TextStyle(
                   fontSize: 15, color: darkBG, fontWeight: FontWeight.w600),
             ),
-            PhoneField(hintText: '(0) 7089175605', onChanged: (value) {}),
+            PhoneField(hintText: '(0) 7089175605', onChanged: (value) {
+              phoneController.text = value;
+            }, controller: phoneController,),
             YMargin(20),
             Text(
               '4-digit pin',
@@ -76,7 +90,7 @@ class LoginScreen extends StatelessWidget {
             YMargin(10),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 20.0),
-              child: PinField(pinController: null),
+              child: PinField(pinController: pinController),
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -92,13 +106,45 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             YMargin(20),
-            Button(
-              text: 'Log in',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => StudentDashboardScreen()));
+            Consumer<AuthProvider>(
+              builder: (ctx, provider, widget) => Button(
+                text: 'Log in',
+                onPressed: () async {
 
-              },
-              height: 50,
+                  showDialog(context: ctx,
+                      builder: (ctx) => AlertDialog(
+                        content: Container(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            SpinKitCircle(color: darkAccent),
+                          ],
+                        )),
+                      ));
+                  LoginModel loginModel = LoginModel(phoneNumber: phoneController.text.trim(), password: pinController.text.trim());
+                  BaseResponse<LoginResponse> response = await provider.login(loginModel);
+
+                  if(response.status == Status.COMPLETED && (response.data?.accessToken ?? '').isNotEmpty){
+//                    print(response.data.accessToken);
+
+                  SharedPreferences pref = await SharedPreferences.getInstance();
+                  pref.setString('token', response.data.accessToken);
+
+                  HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
+                  houseProvider.getHouses();
+
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => StudentDashboardScreen()));
+                  }else{
+                    Navigator.pop(context);
+                    print(response.message);
+                  }
+
+
+
+                },
+                height: 50,
+              ),
             ),
             YMargin(30),
             Center(
