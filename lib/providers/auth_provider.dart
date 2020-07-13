@@ -7,9 +7,12 @@ import 'package:findr/services/service_locator.dart';
 class AuthProvider extends ChangeNotifier{
 
   AuthService _authService = locator<AuthService>();
+ // FirebaseServices _otpService = locator<FirebaseServices>();
+  BuildContext context;
 
   BaseResponse<LoginResponse> loginResponse = BaseResponse<LoginResponse>.completed();
   BaseResponse<UserData> registerResponse = BaseResponse<UserData>.completed();
+  BaseResponse<bool> otpResponse =  BaseResponse<bool>.completed();
 
   Future<BaseResponse<LoginResponse>> login(LoginModel model) async{
     loginResponse = BaseResponse<LoginResponse>.loading(message: '');
@@ -25,13 +28,22 @@ class AuthProvider extends ChangeNotifier{
   Future<BaseResponse<UserData>> register(RegisterModel model) async{
     registerResponse = BaseResponse<UserData>.loading(message: '');
     notifyListeners();
-
+  
     registerResponse = await _authService.register(model);
     notifyListeners();
 
     return registerResponse;
   }
 
+  // Future<bool> otpAction (String phoneNumber ) async{
+  //   otpResponse = BaseResponse<bool>.loading(message: '');
+  //   notifyListeners();
+
+  //   otpResponse = await _otpService.verifyPhoneNumber(phoneNumber, context);      
+  //   notifyListeners();
+
+  //   return otpResponse;
+  // }
 
 
 }

@@ -132,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                   pref.setString('token', response.data.accessToken);
 
                   HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
-                  houseProvider.getHouses();
+                    houseProvider.getHouses();
 
                     Navigator.push(context, MaterialPageRoute(builder: (_) => StudentDashboardScreen()));
                   }else{

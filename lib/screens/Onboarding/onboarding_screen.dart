@@ -1,9 +1,9 @@
 import 'package:findr/models/auth.dart';
 import 'package:findr/models/base_response.dart';
 import 'package:findr/providers/auth_provider.dart';
-import 'package:findr/screens/Accounts/agent_profile.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
 import 'package:findr/screens/login_screen.dart';
+import 'package:findr/services/firebase_service.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
@@ -25,6 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final int _numPages = 3;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+  FirebaseServices _services =  new FirebaseServices();
 
 
   List<Widget> _buildPageIndicator() {
@@ -265,7 +266,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           PhoneField(hintText: '(0) 7089175605', onChanged: (value){
             phoneNumberController.text = value;
-          }, controller:  phoneNumberController,),
+          }, controller:  phoneNumberController ,),
           YMargin(20),
           Text(
             'E-mail',
@@ -363,7 +364,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 _pageController.animateToPage(_currentPage + 1,
                     duration: Duration(milliseconds: 300),
                     curve: Curves.linearToEaseOut);
-              }else{
+
+                    //attempt to send the otp to the user device
+                  bool res = await _services.verifyPhoneNumber(phoneNumberController.text, context);
+                  print(res);
+              }
+              
+              
+              else{
                 Navigator.pop(context);
                 print(response.message);
               }
@@ -430,7 +438,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Consumer<AuthProvider>(
             builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
               //show loading dialog
-
+                
 
               Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
             }, height: 50,),
