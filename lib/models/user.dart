@@ -1,14 +1,14 @@
-import 'package:findr/models/base_model.dart';
 
-class User extends BaseModel
+
+class UserUpdateModel
 {
-    final String fullName;
-  final String phoneNumber;
-  final String location;
-  final String email;
-  final bool isVerified;
-  final String userType;
+  final String fullName;
   final String image;
 
-  User({this.fullName, this.phoneNumber, this.location, this.email, this.isVerified, this.userType,this.image});
+  UserUpdateModel({this.fullName,this.image});
+
+    //use this to convert raw text to json
+  Map<String, dynamic> toMap() {
+    return {"fullname": fullName, "image": image};
+  }
 }

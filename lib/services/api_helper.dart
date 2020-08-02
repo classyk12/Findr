@@ -36,6 +36,21 @@ class ApiHelper {
     return response;
   }
 
+  Future<http.Response> patch({String endpoint, dynamic body, header}) async {
+    print('call api patch request: $endpoint');
+    var response;
+    try {
+      var b = json.encode(body);
+      response = await http.patch(_baseUrl + endpoint, body: b, headers: header);
+    } on SocketException {
+      print('Error api patch request: $endpoint');
+
+      throw Exception('No Internet connection');
+//      return null;
+    }
+    return response;
+  }
+
   Future<dynamic> delete({String endpoint, dynamic header}) async {
     var response;
     try {

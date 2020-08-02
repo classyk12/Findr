@@ -7,9 +7,10 @@ class ProfilePicture extends StatelessWidget{
   final Function() onPressed;
   final bool showCamera;
   final double radius;
+  final dynamic child;
 
 
-  ProfilePicture({@required this.onPressed, this.showCamera = false, this.radius = 60});
+  ProfilePicture({@required this.onPressed, this.showCamera = false, this.radius = 60, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,10 @@ class ProfilePicture extends StatelessWidget{
           CircleAvatar(
             radius: radius,
             backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+            child: ClipRRect(
+              borderRadius: new BorderRadius.circular(100.0),
+               child: child
+            ),
           ),
 
           showCamera ? InkWell(

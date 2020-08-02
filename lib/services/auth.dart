@@ -35,6 +35,7 @@ class AuthService {
       //catch the error
     }).catchError((e) => BaseResponse<UserData>.error(message: e.toString()));
   }
+  
 
   Future<BaseResponse<LoginResponse>> login(LoginModel model) async {
     return await _apiHelper
@@ -48,6 +49,7 @@ class AuthService {
         final response = LoginResponse.jsonConvert(jsonData['data']);
 //        print(response);
         //response value will be stored in a shared preference or provider ......
+        
 
         return BaseResponse<LoginResponse>.completed(
             message: "login success", data: response);

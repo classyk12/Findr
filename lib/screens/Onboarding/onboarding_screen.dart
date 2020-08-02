@@ -1,9 +1,15 @@
+
+import 'dart:convert';
+import 'dart:io';
+import 'package:findr/models/agent.dart';
 import 'package:findr/models/auth.dart';
 import 'package:findr/models/base_response.dart';
+import 'package:findr/models/user.dart';
+import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
 import 'package:findr/screens/login_screen.dart';
-import 'package:findr/services/firebase_service.dart';
+import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';
@@ -13,7 +19,9 @@ import 'package:findr/widgets/profile_picture.dart';
 import 'package:findr/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -25,7 +33,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final int _numPages = 3;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
-  FirebaseServices _services =  new FirebaseServices();
+
+  Future<dynamic> file;
+  String base64Image;
+  String fileName;
+  final picker = ImagePicker();
+  
+
 
 
   List<Widget> _buildPageIndicator() {
@@ -130,10 +144,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   _currentPage = page;
                 });
               },
-              children: <Widget>[
+              children: <Widget>[            
                 _onBoarding1(),
-                _signup(),
-                _profile(),
+                 _signup(),  
+                _profile(context),           
+                                
+                
               ],
             ),
           ),
@@ -223,6 +239,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
+
 
   Widget _signup() {
     return Padding(
@@ -360,14 +377,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               if(response.status == Status.COMPLETED){
                 print(response.message);
+                //store user information in shared preference
+                  SharedPreferences pref =  await SharedPreferences.getInstance();
+
+                pref.setString("fullName", response.data.fullName);
+                pref.setString("token", response.data.accessToken);
+                pref.setInt("id", response.data.id);
+                pref.setString("created_date", response.data.createdAt.toString());
+                pref.setString("user_type", response.data.userType);
+                pref.setString("phone_number", response.data.phoneNumber);
+                
                 Navigator.pop(context);
                 _pageController.animateToPage(_currentPage + 1,
                     duration: Duration(milliseconds: 300),
                     curve: Curves.linearToEaseOut);
 
                     //attempt to send the otp to the user device
-                  bool res = await _services.verifyPhoneNumber(phoneNumberController.text, context);
-                  print(res);
+                 // bool res = await _services.verifyPhoneNumber(phoneNumberController.text, context);
+                 // print(res);
               }
               
               
@@ -379,6 +406,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             }, height: 50,),
           ),
+
           YMargin(10),
           FlatButton(
             splashColor: lightAccent.withOpacity(0.2),
@@ -400,7 +428,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _profile(){
+
+  Widget _profile(BuildContext context){
     return Padding(
       padding: const EdgeInsets.all(15.0).add(
         EdgeInsets.only(left: 5, right: 5),
@@ -424,7 +453,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           YMargin(80),
-          Center(child: ProfilePicture(onPressed: (){}, showCamera: true,),),
+
+          Center(child: ProfilePicture(
+            child: FutureBuilder(builder: (context,data){
+              if(data.hasData){
+                // setState(() {
+                base64Image = base64Encode(File(data.data.path).readAsBytesSync());
+                 fileName = data.data.path.split(".").last;
+                // print(fileName);
+                print(fileName);
+               
+                
+               return Image.file(File(data.data.path), fit: BoxFit.fitWidth, width: 120);
+              }
+              else{
+                return Text('no image selected',style:TextStyle(fontSize: 12));
+              }
+              
+            },
+            future: file
+            ),
+
+            onPressed: (){
+            displayDialog();
+
+          }, showCamera: true)),
 //          YMargin(20),
 //          Text(
 //            'Full name',
@@ -435,19 +488,77 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 //          ),
 //          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
           YMargin(30),
-          Consumer<AuthProvider>(
-            builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
-              //show loading dialog
-                
+          ChangeNotifierProvider(
+                     create: (context) => AgentProvider(),
+                      child: Consumer<AgentProvider>(
+              builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
+                //upload image 
+                if(base64Image.isEmpty){
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+                }            
+                else{
+                  
+                  showDialog(context: ctx,
+                    builder: (ctx) => AlertDialog(
+                      content: Container(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SpinKitCircle(color: darkAccent),
+                        ],
+                      )),
+                    ));
 
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
-            }, height: 50,),
+                    SharedPreferences pref = await SharedPreferences.getInstance();
+
+                  var fullName = pref.getString("fullName");
+                  String full64 = 'data:image/$fileName;base64,' + base64Image;
+                 // String full64 = 'data:image/jpeg;base64';
+                  UserUpdateModel uploadModel = UserUpdateModel(image: full64,
+                  fullName: fullName);
+
+                BaseResponse<AgentInfo> response = await provider.uploadImage(uploadModel);
+
+                if(response.status == Status.COMPLETED){
+                  pref.setString("image", response.data.image);
+                  print(response.message);
+                  if(userType.toLowerCase() == 'agent'){
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+                  }
+                  else{
+                     Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+                  }
+                  
+                  // _pageController.animateToPage(_currentPage + 1,
+                  //     duration: Duration(milliseconds: 300),
+                  //     curve: Curves.linearToEaseOut);              
+                }
+                
+                 else{
+                  Navigator.pop(context);
+                  print(response.message);
+                  // SnackBar snackbar =  SnackBar(content: response.message ?? Text('upload failed, try again'));
+                  // snackbar.
+                }
+
+
+
+                }
+              }, height: 50,),
+            ),
           ),
           YMargin(10),
+
           FlatButton(
             splashColor: lightAccent.withOpacity(0.2),
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationPage()));
+              if(userType.toLowerCase() == 'agent'){
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+              }
+              else{      
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+              }
 
 //              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
 //                  curve: Curves.linearToEaseOut);
@@ -460,33 +571,61 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-
-
-
         ],
       ),
     );
   }
 
- // TextEditingController controller = TextEditingController();
-//   Widget _onBoarding2() {
-//     return Container(
-//       color: Color(0xffe7e7e7),
-//       child: Column(
-//         children: <Widget>[
-// //        PinField(pinController: null),
-//           YMargin(10),
-// //        ProfilePicture(onPressed: (){},showCamera: true,),
 
-//           HouseItem(),
+    displayDialog(){
+    //build widget to collect code from user
+    showDialog(context: context,barrierDismissible: true, builder: (context){
+       return AlertDialog(
+              title: Text('Quick actions?', style: TextStyle(color: darkBG, fontSize:20)),
+              content: Text('Choose from the options below'),
+              actions: <Widget>[
+                FlatButton(onPressed: () async{
+                  file = picker.getImage(source: ImageSource.camera).whenComplete(() {
+                     setState(()  {                 
+                   //  if(image != null){
+                   // file = File(image.path);
+                    
+                 //   }
+                   //file = null;
+                  });
+                    //base64Image = base64Encode();
+                    //fileName = file.path.split("/").last;
+                   // print(base64Image);
+                   // print(fileName);
+                  });
+                // var image =  await picker.getImage(source: ImageSource.camera);
+                // print(image);
+                 
+                },
+                 child: Text('use camera', style: TextStyle(color: darkBG, fontSize: 20))),
 
-//           YMargin(10),
-//           Container(
-//               padding: EdgeInsets.all(15),
-//               color: darkAccent,
-//               child: SearchField(searchController: controller)),
-//         ],
-//       ),
-//     );
-//   }
+                FlatButton(onPressed: () async{
+                  file = picker.getImage(source: ImageSource.gallery).whenComplete(() {
+                     setState(()  {                 
+                   //  if(image != null){
+                   // file = File(image.path);
+                    
+                 //   }
+                   //file = null;
+                  });
+                    //base64Image = base64Encode();
+                    //fileName = file.path.split("/").last;
+                   // print(base64Image);
+                   // print(fileName);
+                  });
+                // var image =  await picker.getImage(source: ImageSource.camera);
+                // print(image);
+                 
+                }, child: Text('choose from gallery',style: TextStyle(color: darkBG, fontSize: 20)))
+             ],
+
+             );
+
+    });
+    }
 }

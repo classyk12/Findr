@@ -63,6 +63,17 @@ class AgentListing extends BaseModel{
     ..createdAt = DateTime.parse(item['created_at'])
     ..updatedAt = DateTime.parse(item['updated_at']);
 }
+}
+
+class AgentUploadModel{
+  String file;
+
+  AgentUploadModel(this.file);
+
+   //use this to convert json to list/object
+ Map<String, dynamic> toMap() {
+    return {"file": file};
+  }
 
 }
 

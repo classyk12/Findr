@@ -150,7 +150,7 @@ class LoginScreen extends StatelessWidget {
             Center(
               child: RichText(
                 text: TextSpan(
-                  text: 'Don\'t have an account? ',
+                  text: 'Dont have an account? ',
                   style: TextStyle(
                       color: Colors.grey, fontSize: 16),
                   children: <TextSpan>[

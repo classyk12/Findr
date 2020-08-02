@@ -68,6 +68,7 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.w400,
     ),
   ),
+  
   hintColor: Colors.grey,
   buttonTheme: ButtonThemeData(
    splashColor: lightAccent,
