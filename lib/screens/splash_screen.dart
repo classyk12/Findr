@@ -1,6 +1,10 @@
 
 import 'dart:async';
+import 'package:findr/providers/agent_provider.dart';
+import 'package:findr/providers/house_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -8,17 +12,41 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3),
-            () => Navigator.pushReplacementNamed(context, '/landing'));
-//        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OnboardingScreen())));
+    
+    //check if user is currently logged in
+    () async{
+      SharedPreferences pref = await SharedPreferences.getInstance();
+     print(pref.containsKey("token"));
+     print(pref.containsKey("id"));
 
+      if(pref.containsKey("token") && pref.containsKey("id")){
+        //print(pref.getString(${pref.getString("key")}));
+        AgentProvider agentProvider = Provider.of<AgentProvider>(context, listen: false);
+         await agentProvider.getProfileData(pref.getInt("id"));
+         //print(data);
 
-  }
+          HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
+           houseProvider.getHouses();
 
+          Navigator.pushReplacementNamed(context, '/dashboard');    
+      }    
 
+      else{
+        Navigator.pushReplacementNamed(context, '/landing');
+      }
+    }
+
+      
+
+    
+
+    );}
+    
 //  Timer t;
 
   @override
@@ -32,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children:<Widget>[
              Hero(
                tag: 'findr_logo',
-                 child: Image.asset('assets/images/Findr2.png',height: 200.0, width: 200),),
+                 child: Image.asset('assets/images/Findr2.png',height: 200.0, width: 200)),
           ]
         ),
     ));
@@ -42,6 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void dispose() {
 //    t.cancel();
     super.dispose();
+}
 
-  }
+
 }

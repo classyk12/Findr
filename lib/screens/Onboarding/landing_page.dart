@@ -1,7 +1,7 @@
 import 'package:findr/screens/Onboarding/onboarding_screen.dart';
+import 'package:findr/screens/login_screen.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
-import 'package:findr/widgets/loader.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/button.dart';
@@ -36,7 +36,7 @@ class LandingScreen extends StatelessWidget {
                   FlatButton(
                     splashColor: lightAccent.withOpacity(0.2),
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>Loading()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
                     },
                     child: Text(
                       'Sign in',

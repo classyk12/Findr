@@ -1,5 +1,4 @@
 
-
 class UserUpdateModel
 {
   final String fullName;

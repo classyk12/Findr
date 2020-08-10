@@ -163,7 +163,7 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
                 if(response.status == Status.COMPLETED){
                  // pref.setString("image", response.data.image);
                   print(response.message);                
-                     Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+                     Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
                   
                   // _pageController.animateToPage(_currentPage + 1,
                   //     duration: Duration(milliseconds: 300),
@@ -207,7 +207,7 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              StudentDashboardScreen()));
+                              DashboardScreen()));
                     },
                     child: Text(
                       'Skip',

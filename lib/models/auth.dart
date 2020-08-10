@@ -1,6 +1,4 @@
 
-import 'package:findr/models/base_model.dart';
-
 class RegisterModel {
   final String fullName;
   final String phoneNumber;
@@ -18,24 +16,25 @@ class RegisterModel {
 
 //this is returned by the API after successful registration
 //we cn store this in a provider so we can access it anytime
-class UserData extends BaseModel{
+class UserData {
+  final int id;
   final String fullName;
   final String phoneNumber;
   final String email;
   final String userType;
   final String accessToken;
 
-UserData(id,this.fullName, this.phoneNumber,createdAt ,this.email, this.userType,updatedAt, this.accessToken);
+UserData(this.id,this.fullName, this.phoneNumber,this.email, this.userType, this.accessToken);
 
  factory UserData.jsonConvert(Map<String, dynamic> item) {
     return UserData(
         item['id'],
         item['fullname'],
         item['phone_number'],
-        DateTime.parse(item['created_at']),  
+        //DateTime.parse(item['created_at']),  
          item['email'],
          item['user_type'],
-       DateTime.parse(item['updated_at'] ?? null),
+    //   DateTime.parse(item['updated_at'] ?? null),
        item['access_token']
     );
     }

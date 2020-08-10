@@ -2,12 +2,14 @@ import 'package:findr/screens/Accounts/student_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
 import 'package:findr/screens/bookmark_screen.dart';
 import 'package:findr/screens/favourite_screen.dart';
+import 'package:findr/screens/login_screen.dart';
 import 'package:findr/screens/setting_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentDrawer extends StatelessWidget {
   final String title;
@@ -83,7 +85,7 @@ class StudentDrawer extends StatelessWidget {
                               if(title != titles[0]) {
                                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        StudentDashboardScreen()));
+                                        DashboardScreen()));
                               }else{
                                 Navigator.pop(context);
                               }
@@ -334,7 +336,12 @@ class StudentDrawer extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         top: 40, left: 30, bottom: 10),
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async{
+                       SharedPreferences pref = await SharedPreferences.getInstance();
+                              pref.remove("token");
+                              pref.remove("id");
+                              pref.remove("fullName");
+
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (BuildContext context) => LandingScreen()));
                       },

@@ -8,7 +8,6 @@ import 'package:findr/models/user.dart';
 import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
-import 'package:findr/screens/login_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
@@ -29,6 +28,8 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+
+ // FirebaseServices _services = locator<FirebaseServices>();
 
   final int _numPages = 3;
   final PageController _pageController = PageController(initialPage: 0);
@@ -227,11 +228,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 setState(() {
                   userType = 'Student';
                 });
-//                Navigator.push(context,
-//                    MaterialPageRoute(builder: (_) => AgentProfileScreen()));
-
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => LoginScreen()));
+                _pageController.animateToPage(_currentPage + 1,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linearToEaseOut);
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (_) => LoginScreen()));
               },
               text: 'a student',
               height: 50.0),
@@ -380,12 +381,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 //store user information in shared preference
                   SharedPreferences pref =  await SharedPreferences.getInstance();
 
+
                 pref.setString("fullName", response.data.fullName);
                 pref.setString("token", response.data.accessToken);
                 pref.setInt("id", response.data.id);
-                pref.setString("created_date", response.data.createdAt.toString());
-                pref.setString("user_type", response.data.userType);
-                pref.setString("phone_number", response.data.phoneNumber);
                 
                 Navigator.pop(context);
                 _pageController.animateToPage(_currentPage + 1,
@@ -393,8 +392,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     curve: Curves.linearToEaseOut);
 
                     //attempt to send the otp to the user device
-                 // bool res = await _services.verifyPhoneNumber(phoneNumberController.text, context);
-                 // print(res);
+                  //bool res = await _services.verifyPhoneNumber(phoneNumberController.text, context);
+                  //print(res);
               }
               
               
@@ -527,7 +526,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
                   }
                   else{
-                     Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+                     Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
                   }
                   
                   // _pageController.animateToPage(_currentPage + 1,
@@ -557,7 +556,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
               }
               else{      
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
               }
 
 //              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),

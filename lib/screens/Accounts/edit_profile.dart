@@ -134,7 +134,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     style: TextStyle(color: Colors.red, fontSize: 16)),
                 onPressed: () {
 
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>StudentDashboardScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
                 },
               ))
             ],

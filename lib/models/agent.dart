@@ -1,6 +1,7 @@
 import 'package:findr/models/base_model.dart';
 
 class AgentInfo extends BaseModel {
+  int id;
   String fullName;
   String email;
   String location;
@@ -8,11 +9,13 @@ class AgentInfo extends BaseModel {
   String isVerified;
   String image;
   String userType;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   List<AgentListing> listings;
 
-  AgentInfo(id,this.fullName, this.email, this.image, this.isVerified, this.location, this.phoneNumber, this.userType,
-   createdAt, updatedAt, this.listings);
+  AgentInfo(this.id,this.fullName, this.email, this.image, this.isVerified, this.location, this.phoneNumber, this.userType,
+   this.createdAt, this.updatedAt, this.listings);
 
    //use this to convert json to list/object
   factory AgentInfo.jsonConvert(Map<String, dynamic> item) {

@@ -1,6 +1,7 @@
 
 import 'package:findr/models/auth.dart';
 import 'package:findr/models/base_response.dart';
+import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/Onboarding/onboarding_screen.dart';
@@ -106,6 +107,7 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             YMargin(20),
+
             Consumer<AuthProvider>(
               builder: (ctx, provider, widget) => Button(
                 text: 'Log in',
@@ -131,11 +133,16 @@ class LoginScreen extends StatelessWidget {
                   SharedPreferences pref = await SharedPreferences.getInstance();
                   pref.setString('token', response.data.accessToken);
 
+                  
+                    AgentProvider agentProvider = Provider.of<AgentProvider>(context, listen: false);
+                    agentProvider.getProfileData(pref.getInt("id"));
+
                   HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
                     houseProvider.getHouses();
 
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => StudentDashboardScreen()));
-                  }else{
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => DashboardScreen()));
+                  }
+                  else{
                     Navigator.pop(context);
                     print(response.message);
                   }
@@ -146,6 +153,8 @@ class LoginScreen extends StatelessWidget {
                 height: 50,
               ),
             ),
+
+            
             YMargin(30),
             Center(
               child: RichText(

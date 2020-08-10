@@ -16,22 +16,26 @@ Map<String, String> headers =
 ApiHelper _apiHelper = ApiHelper();
 
 
-    Future<BaseResponse<AgentInfo>> getById (int id) {
-      headers['token'] = '';
-    return _apiHelper.get(endpoint: 'agents/$id', header: headers).then((data) {
+    Future<BaseResponse<AgentInfo>> getProfile (int id) async{
+       SharedPreferences pref = await SharedPreferences.getInstance();
+        String token = pref.getString('token');
+       headers['Authorization'] = 'bearer ' + token;
+    return await _apiHelper.get(endpoint: 'users/$id', header: headers).then((data) {
       //check if api call returned 200
       if (data.statusCode == 200) {
         //convert data to a map type
-        final jsonData = json.decode(data.body);
+        final jsonData = json.decode(data.body)['data'];
         final agent = AgentInfo.jsonConvert(jsonData);
         print(agent); //sample to check what repsonse looks like
 
 
         return BaseResponse<AgentInfo>.completed(message: 'retrieved successfully', data: agent);
       }
+      
       return BaseResponse<AgentInfo>.error(message: 'An error occured!', data: null);
     }).catchError((_) => BaseResponse<AgentInfo>.error(message: 'An error occured!',data: null));
   }
+
 
    Future<BaseResponse<AgentInfo>> uploadId (AgentUploadModel model) async {
       SharedPreferences pref = await SharedPreferences.getInstance();

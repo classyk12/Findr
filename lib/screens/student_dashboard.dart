@@ -8,12 +8,12 @@ import 'package:findr/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StudentDashboardScreen extends StatefulWidget{
+class DashboardScreen extends StatefulWidget{
 
   @override
-  _StudentDashboardState createState() => _StudentDashboardState();
+  _DashboardState createState() => _DashboardState();
 }
-class _StudentDashboardState extends State<StudentDashboardScreen>{
+class _DashboardState extends State<DashboardScreen>{
   
   HouseProvider houseProvider;
 

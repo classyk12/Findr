@@ -34,5 +34,16 @@ class AgentProvider extends ChangeNotifier{
     return updateResponse;
   }
 
+   Future<BaseResponse<AgentInfo>> getProfileData(int id) async{
+    //print(model.image);
+    updateResponse = BaseResponse<AgentInfo>.loading(message: '');
+    notifyListeners();
+  
+    updateResponse = await _agentService.getProfile(id);
+    notifyListeners();
+
+    return updateResponse;
+  }
+
 
 }
