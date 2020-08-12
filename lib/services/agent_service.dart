@@ -16,24 +16,33 @@ Map<String, String> headers =
 ApiHelper _apiHelper = ApiHelper();
 
 
-    Future<BaseResponse<AgentInfo>> getProfile (int id) async{
-       SharedPreferences pref = await SharedPreferences.getInstance();
+    Future<BaseResponse<AgentDashBoardModel>> getDashboard () async{
+      try {
+        SharedPreferences pref = await SharedPreferences.getInstance();
         String token = pref.getString('token');
-       headers['Authorization'] = 'bearer ' + token;
-    return await _apiHelper.get(endpoint: 'users/$id', header: headers).then((data) {
-      //check if api call returned 200
-      if (data.statusCode == 200) {
-        //convert data to a map type
-        final jsonData = json.decode(data.body)['data'];
-        final agent = AgentInfo.jsonConvert(jsonData);
-        print(agent); //sample to check what repsonse looks like
+        headers['Authorization'] = 'bearer ' + token;
+
+        var data = await _apiHelper.get(endpoint: 'dashboard', header: headers);
+        if (data != null) {
+          //check if api call returned 200
+          if (data.statusCode == 200) {
+            //convert data to a map type
+            final jsonData = json.decode(data.body)['data'];
+            final agent = AgentDashBoardModel.fromJson(jsonData);
+            print(agent); //sample to check what repsonse looks like
 
 
-        return BaseResponse<AgentInfo>.completed(message: 'retrieved successfully', data: agent);
+            return BaseResponse<AgentDashBoardModel>.completed(message: 'retrieved successfully', data: agent);
+          }
+          
+        }
+          return BaseResponse<AgentDashBoardModel>.error(message: 'An error occured!', data: null);
+        
+      } catch (error) {
+        return BaseResponse<AgentDashBoardModel>.error(message: 'An error occured!',data: null);
       }
-      
-      return BaseResponse<AgentInfo>.error(message: 'An error occured!', data: null);
-    }).catchError((_) => BaseResponse<AgentInfo>.error(message: 'An error occured!',data: null));
+    
+    // .then().catchError((_) => BaseResponse<AgentInfo>.error(message: 'An error occured!',data: null));
   }
 
 

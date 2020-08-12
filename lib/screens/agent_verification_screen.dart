@@ -28,6 +28,8 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
   String filePath;
   final picker = ImagePicker();
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,7 +135,7 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
                      create: (context) => AgentProvider(),
                       child: Consumer<AgentProvider>(
               builder: (ctx, provider, widget) => Button(text: 'Upload',height: 50, width: 100 ,onPressed: () async {
-                   if (base64Image.isEmpty) {
+                   if (base64Image == null || base64Image.isEmpty) {
                       final snackBar =
                        SnackBar(content: Text('upload image or press skip to continue without an ID'));
                       // Find the Scaffold in the widget tree and use it to show a SnackBar.
@@ -162,7 +164,12 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
 
                 if(response.status == Status.COMPLETED){
                  // pref.setString("image", response.data.image);
-                  print(response.message);                
+                  print(response.message);   
+
+                  //GET AGENT INFORMATION with agent provider
+                   AgentProvider agentProvider = Provider.of<AgentProvider>(context, listen: false);
+                    await agentProvider.getDashboard();
+                    
                      Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
                   
                   // _pageController.animateToPage(_currentPage + 1,
@@ -202,10 +209,16 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
                 ),
                 YMargin(20),
                 Center(
-                  child: FlatButton(
+                  child: Consumer<AgentProvider>(builder: (ctx, provider, widget) =>
+                   FlatButton(
                     splashColor: lightAccent.withOpacity(0.2),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+
+                       //GET USER INFORMATION with agent provider    
+                        AgentProvider agentProvider = Provider.of<AgentProvider>(context, listen: false);
+                        agentProvider.getDashboard();
+ 
+                        Navigator.of(context).push(MaterialPageRoute(
                           builder: (BuildContext context) =>
                               DashboardScreen()));
                     },
@@ -217,6 +230,9 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
                       ),
                     ),
                   ),
+                   )
+                  
+                 
                 ),
               ],
             )

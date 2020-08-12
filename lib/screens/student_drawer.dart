@@ -1,24 +1,31 @@
+import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/screens/Accounts/student_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
 import 'package:findr/screens/bookmark_screen.dart';
 import 'package:findr/screens/favourite_screen.dart';
-import 'package:findr/screens/login_screen.dart';
 import 'package:findr/screens/setting_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentDrawer extends StatelessWidget {
   final String title;
-  StudentDrawer({@required this.title});
+  final String fullName;
+  final String email;
+  final String phoneNumber;
+  final String image;
+  StudentDrawer({@required this.title, this.fullName, this.email, this.phoneNumber, this.image});
 
   final List<String> titles = ['Dashboard', 'Profile', 'Bookmarks', 'Favourites', 'Block Users', 'About us', 'Settings', 'Help'];
+  AgentProvider agentProvider ;
 
   @override
   Widget build(BuildContext context) {
+     agentProvider = Provider.of<AgentProvider>(context);
     return Drawer(
       child: Container(
         color: darkAccent,
@@ -31,6 +38,7 @@ class StudentDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
+
                   Container(
                     padding: EdgeInsets.only(bottom: 30),
                     child: Column(
@@ -45,25 +53,26 @@ class StudentDrawer extends StatelessWidget {
                               borderRadius: BorderRadius.circular(60.0),
                               border: Border.all(color: lightPrimary, width: 2.5),
                             ),
+                            
                             child: CircleAvatar(
                               radius: 40,
-                              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                              backgroundImage: NetworkImage( image ?? 'https://via.placeholder.com/150'),
                             ),
                           ),
                         ),
-                        Text('Ogbonna Ikenna',
+                        Text(fullName,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16)),
                         YMargin(4),
-                        Text('thefuckingflag@gmail.com',
+                        Text(email,
                             style: TextStyle(
                                 color: Colors.white60,
                                 fontWeight: FontWeight.normal,
                                 fontSize: 14)),
                         YMargin(4),
-                        Text('+23490898767',
+                        Text(phoneNumber,
                             style: TextStyle(
                                 color: Colors.white60,
                                 fontWeight: FontWeight.normal,
@@ -71,6 +80,7 @@ class StudentDrawer extends StatelessWidget {
                       ],
                     ),
                   ),
+
 
 //            YMargin(40.0),
                   Container(
@@ -338,9 +348,12 @@ class StudentDrawer extends StatelessWidget {
                     child: InkWell(
                       onTap: () async{
                        SharedPreferences pref = await SharedPreferences.getInstance();
-                              pref.remove("token");
-                              pref.remove("id");
-                              pref.remove("fullName");
+                        await pref.clear();
+
+                        print(pref.get("token"));
+
+                        //reset provider
+                       // agentProvider.dispose();
 
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (BuildContext context) => LandingScreen()));

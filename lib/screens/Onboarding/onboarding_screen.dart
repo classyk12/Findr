@@ -7,6 +7,7 @@ import 'package:findr/models/base_response.dart';
 import 'package:findr/models/user.dart';
 import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/auth_provider.dart';
+import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
 import 'package:findr/screens/student_dashboard.dart';
 import 'package:findr/utils/margin.dart';
@@ -382,9 +383,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   SharedPreferences pref =  await SharedPreferences.getInstance();
 
 
-                pref.setString("fullName", response.data.fullName);
-                pref.setString("token", response.data.accessToken);
-                pref.setInt("id", response.data.id);
+                pref.setString('fullName', response.data.fullName);
+                pref.setString('token', response.data.accessToken);
+                pref.setInt('id', response.data.id);
+
+                print(pref.get('token'));
                 
                 Navigator.pop(context);
                 _pageController.animateToPage(_currentPage + 1,
@@ -460,7 +463,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 base64Image = base64Encode(File(data.data.path).readAsBytesSync());
                  fileName = data.data.path.split(".").last;
                 // print(fileName);
-                print(fileName);
+               // print(fileName);
                
                 
                return Image.file(File(data.data.path), fit: BoxFit.fitWidth, width: 120);
@@ -492,8 +495,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Consumer<AgentProvider>(
               builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
                 //upload image 
-                if(base64Image.isEmpty){
-                  Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+                if(base64Image == null || base64Image.isEmpty){
+
+                  if(userType.toLowerCase() == "agent"){
+                     Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+                  }
+                 else{
+                    
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
+                 }
                 }            
                 else{
                   
@@ -523,9 +533,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   pref.setString("image", response.data.image);
                   print(response.message);
                   if(userType.toLowerCase() == 'agent'){
+
                       Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
                   }
                   else{
+                    //NAVIGATE TO DASHBOARD and get USER INFORMATION
+
+                  provider.getDashboard(); //get user logged in information
+                
+                  HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
+                  houseProvider.getHouses(); //get hpuses for student
+
+
                      Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
                   }
                   
@@ -549,27 +568,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           YMargin(10),
 
-          FlatButton(
-            splashColor: lightAccent.withOpacity(0.2),
-            onPressed: (){
-              if(userType.toLowerCase() == 'agent'){
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
-              }
-              else{      
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
-              }
+            Consumer<AgentProvider>(builder: (ctx, provider, widget) =>  FlatButton(
+              splashColor: lightAccent.withOpacity(0.2),
+              onPressed: (){
+                if(userType.toLowerCase() == 'agent'){
+               
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+                }
+                else{      
+                  //NAVIGATE TO DASHBOARD and get USER INFORMATION
+
+                  provider.getDashboard(); //get user logged in information
+                
+                  HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
+                  houseProvider.getHouses(); //get hpuses for student
+
+
+
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
+                }
 
 //              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
 //                  curve: Curves.linearToEaseOut);
-            },
-            child: Text(
-              'Skip',
-              style: TextStyle(
-                color: darkBG,
-                fontSize: 16.0,
+              },
+              child: Text(
+                'Skip',
+                style: TextStyle(
+                  color: darkBG,
+                  fontSize: 16.0,
+                ),
               ),
-            ),
-          ),
+            ), 
+            
+            )
+            
         ],
       ),
     );

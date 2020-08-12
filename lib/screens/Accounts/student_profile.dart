@@ -1,3 +1,4 @@
+import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/screens/Accounts/edit_profile.dart';
 import 'package:findr/screens/student_drawer.dart';
 import 'package:findr/utils/margin.dart';
@@ -5,6 +6,7 @@ import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class StudentProfileScreen extends StatefulWidget {
   @override
@@ -13,9 +15,12 @@ class StudentProfileScreen extends StatefulWidget {
 
 class _StudentProfileScreenState extends State<StudentProfileScreen> {
  // bool _isVerified = true;
+  AgentProvider agentProvider;
 
   @override
   Widget build(BuildContext context) {
+
+    agentProvider = Provider.of<AgentProvider>(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
@@ -29,33 +34,45 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         brightness: Brightness.dark,
         title: Text('Profile', style: TextStyle(color: Colors.white),),
       ),
-      drawer: StudentDrawer(title: 'Profile'),
+      drawer: StudentDrawer(title: 'Profile', 
+        fullName: agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName ?? 'loading...',
+        email: agentProvider?.agentDashboardResponse?.data?.agentdetails?.email ?? 'loading..',
+         phoneNumber: agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber ?? 'loading..',
+         image: agentProvider?.agentDashboardResponse?.data?.agentdetails?.image),
+
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 15.0),
+              padding: const EdgeInsets.only(left: 30.0, right: 15.0, top:20.0),
               child: Column(
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      ProfilePicture(onPressed: () {}, showCamera: false),
+                      // CircleAvatar(
+                      //         radius: 40,
+                      //         backgroundImage: NetworkImage( 
+                      //           agentProvider?.agentDashboardResponse?.data?.agentdetails?.image ?? 'https://via.placeholder.com/150'),
+                      //       ),
+                          ProfilePicture(onPressed: () {}, 
+                          showCamera: false, image: agentProvider?.agentDashboardResponse?.data?.agentdetails?.image),
                       Column(children: <Widget>[
+
                         Padding(
                           padding: const EdgeInsets.fromLTRB(15.0, 8.0, 0.0, 3.0),
-                          child: Text('Olushola Peters',
+                          child: Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName ?? 'loading...',
                               style: TextStyle(
                                 color: darkBG,
-                                fontSize: 16.0,
+                                fontSize: 20.0,
                                 fontWeight: FontWeight.w600,
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 3.0),
                           child: Text(
-                            'Student',
+                            agentProvider?.agentDashboardResponse?.data?.agentdetails?.userType ?? 'loading...',
                             style: TextStyle(
                                 color: darkBG.withOpacity(0.7),
                                 fontSize: 15.0,
@@ -74,7 +91,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.phone_square, color: Colors.grey, size: 20),
                       XMargin(10.0),
-                      Text('(+234)-903-566-1212',
+                      Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber ?? 'loading...',
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
@@ -99,7 +116,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.envelope, color: Colors.grey, size: 20.0,),
                       XMargin(10.0),
-                      Text('sholapeters@gmail.com',
+                      Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.email ?? 'loading...',
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,

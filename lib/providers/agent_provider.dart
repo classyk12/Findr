@@ -11,6 +11,7 @@ class AgentProvider extends ChangeNotifier{
   BuildContext context;
 
   BaseResponse<AgentInfo> updateResponse = BaseResponse<AgentInfo>.completed();
+  BaseResponse<AgentDashBoardModel> agentDashboardResponse =  BaseResponse<AgentDashBoardModel>.completed();
 
   Future<BaseResponse<AgentInfo>> uploadImage(UserUpdateModel model) async{
     //print(model.image);
@@ -34,16 +35,14 @@ class AgentProvider extends ChangeNotifier{
     return updateResponse;
   }
 
-   Future<BaseResponse<AgentInfo>> getProfileData(int id) async{
+   Future getDashboard() async{
     //print(model.image);
-    updateResponse = BaseResponse<AgentInfo>.loading(message: '');
+    agentDashboardResponse = BaseResponse<AgentDashBoardModel>.loading(message: '');
     notifyListeners();
   
-    updateResponse = await _agentService.getProfile(id);
+    agentDashboardResponse = await _agentService.getDashboard();
     notifyListeners();
 
-    return updateResponse;
   }
-
 
 }

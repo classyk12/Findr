@@ -21,17 +21,17 @@ class _SplashScreenState extends State<SplashScreen> {
     //check if user is currently logged in
     () async{
       SharedPreferences pref = await SharedPreferences.getInstance();
-     print(pref.containsKey("token"));
-     print(pref.containsKey("id"));
+      print(pref.containsKey("token"));
+      //print(pref.containsKey("id"));
 
-      if(pref.containsKey("token") && pref.containsKey("id")){
+      if(pref.containsKey("token")){
         //print(pref.getString(${pref.getString("key")}));
         AgentProvider agentProvider = Provider.of<AgentProvider>(context, listen: false);
-         await agentProvider.getProfileData(pref.getInt("id"));
-         //print(data);
+        agentProvider.getDashboard();
+        
 
-          HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
-           houseProvider.getHouses();
+        HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
+        houseProvider.getHouses();
 
           Navigator.pushReplacementNamed(context, '/dashboard');    
       }    
