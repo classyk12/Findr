@@ -72,7 +72,6 @@ class _DashboardState extends State<DashboardScreen>{
 
   }
 
-
   else{
 
      if(houseProvider?.houseResponse?.status == Status.LOADING){

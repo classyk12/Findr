@@ -1,9 +1,11 @@
+import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/screens/Accounts/edit_profile.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class AgentProfileScreen extends StatefulWidget {
   @override
@@ -12,9 +14,11 @@ class AgentProfileScreen extends StatefulWidget {
 
 class _AgentProfileScreenState extends State<AgentProfileScreen> {
   bool _isVerified = true;
+  AgentProvider agentProvider;
 
   @override
   Widget build(BuildContext context) {
+     agentProvider = Provider.of<AgentProvider>(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
@@ -63,11 +67,14 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      ProfilePicture(onPressed: () {}, showCamera: false),
+
+                      ProfilePicture(onPressed: () {}, showCamera: false,
+                       image: agentProvider?.agentDashboardResponse?.data?.agentdetails?.image),
+
                       Column(children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.fromLTRB(15.0, 8.0, 0.0, 3.0),
-                          child: Text('Olushola Peters',
+                          child: Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName,
                               style: TextStyle(
                                 color: darkBG,
                                 fontSize: 16.0,
@@ -79,7 +86,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Text(
-                              'Agent',
+                              agentProvider?.agentDashboardResponse?.data?.agentdetails?.userType,
                               style: TextStyle(
                                   color: darkBG.withOpacity(0.7),
                                   fontSize: 15.0,
@@ -87,7 +94,8 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                               textDirection: TextDirection.ltr,
                             ),
                           ),
-                          _isVerified
+                          
+                          agentProvider?.agentDashboardResponse?.data?.agentdetails?.isVerified?.toLowerCase() == "verified"
                               ? Container(
                             decoration: BoxDecoration(
                               color: darkAccent,
@@ -99,16 +107,18 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                             child:
                             Icon(Icons.done, color: lightPrimary, size: 10),
                           )
-                              : Container(
+                              : 
+                              
+                              Container(
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Colors.grey[500],
                               borderRadius: BorderRadius.circular(20.0),
                               border:
-                              Border.all(color: lightPrimary, width: 1.5),
+                              Border.all(color: Colors.grey[800], width: 1.5),
                             ),
                             padding: EdgeInsets.all(4.0),
-                            child: Icon(Icons.schedule,
-                                color: lightPrimary, size: 10),
+                            child: Icon(Icons.done,
+                                color: Colors.grey[200], size: 10),
                           ),
                         ])
                       ])
@@ -122,7 +132,9 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.phone_square, color: Colors.grey, size: 20),
                       XMargin(10.0),
-                      Text('(+234)-903-566-1212',
+                      Text(
+                        agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber,
+                        //'(+234)-903-566-1212',
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
@@ -147,7 +159,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.envelope, color: Colors.grey, size: 20.0,),
                       XMargin(10.0),
-                      Text('sholapeters@gmail.com',
+                      Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.email,
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
@@ -162,7 +174,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.cc_mastercard, color: Colors.grey),
                       XMargin(10.0),
-                      !_isVerified
+                      agentProvider?.agentDashboardResponse?.data?.agentdetails?.isVerified?.toLowerCase() != "verified"
                           ? Text('Not Verified',
                           style: TextStyle(
                               color: Colors.red,

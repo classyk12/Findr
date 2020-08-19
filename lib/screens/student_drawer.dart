@@ -1,4 +1,5 @@
 import 'package:findr/providers/agent_provider.dart';
+import 'package:findr/screens/Accounts/agent_profile.dart';
 import 'package:findr/screens/Accounts/student_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
 import 'package:findr/screens/bookmark_screen.dart';
@@ -125,9 +126,14 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if(title != titles[1]) {
+                                //dynamically navigate
+                                agentProvider?.agentDashboardResponse?.data?.agentdetails?.userType?.toLowerCase() == "agent" ?
+
                                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        StudentProfileScreen()));
+                                        AgentProfileScreen())) : Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        StudentProfileScreen()))  ;
                               }else{
                                 Navigator.pop(context);
                               }
