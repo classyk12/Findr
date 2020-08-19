@@ -1,0 +1,1 @@
+const String houseImage = 'http://politify.us/wp-content/uploads/2018/11/three-unique-projects-making-the-most-of-shipping-containers.jpg';

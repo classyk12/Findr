@@ -34,8 +34,8 @@ String _endpoint = "houses";
         }
         return BaseResponse<List<HouseList>>.completed(data: houseList);
       }
-      return BaseResponse<List<HouseList>>.error(message: 'An error occurred!', data: null);
-    }).catchError((_) => BaseResponse<List<HouseList>>.error( message: 'An error occured!', data: null));
+      return BaseResponse<List<HouseList>>.error(message: 'An error occurred!');
+    }).catchError((_) => BaseResponse<List<HouseList>>.error( message: 'An error occured!'));
   }
 
 

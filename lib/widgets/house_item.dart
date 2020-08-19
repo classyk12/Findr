@@ -1,13 +1,27 @@
+import 'dart:math';
+
+import 'package:findr/models/house.dart';
 import 'package:findr/screens/agent_details_screen.dart';
+import 'package:findr/utils/constants.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 
 class HouseItem extends StatelessWidget {
 
+  final HouseList house;
+
+  HouseItem({this.house}): assert(house != null);
+
   @override
   Widget build(BuildContext context) {
+    String img = houseImage;
+    if(house.image.length > 0) {
+      //get a random image from list of house image
+      img = house.image[Random().nextInt(house.image.length)];
+    }
     return Card(
       margin: EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(
@@ -23,10 +37,9 @@ class HouseItem extends StatelessWidget {
               child: Stack(
                 fit: StackFit.loose,
                 children: <Widget>[
-                  FadeInImage.assetNetwork(image: 'http://politify.us/wp-content/uploads/2018/11/three-unique-projects-making-the-most-of-shipping-containers.jpg',
+                  FadeInImage.assetNetwork(image: img,
                   placeholder: 'assets/images/Findr_logo.png', width: screenWidth(context, percent: 0.3),
                   height: 128,
-
                   fit: BoxFit.cover,),
                   Align(
                     alignment: Alignment.topLeft,
@@ -50,7 +63,7 @@ class HouseItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('6-bedroom flat at Ago Iwoye',
+                        Text('${house.houseType ?? 'To Let'}',
                         style: TextStyle(
                           color: darkBG,
                           fontSize: 13,
@@ -66,7 +79,7 @@ class HouseItem extends StatelessWidget {
                                 Icon(LineIcons.map_marker,
                                 color: Colors.grey, size: 12,),
                                 XMargin(2),
-                                Text('Ita oluwo',
+                                Text('${house.houseArea}',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 12,
@@ -79,7 +92,7 @@ class HouseItem extends StatelessWidget {
 
                             Padding(
                               padding: const EdgeInsets.only(right: 10.0),
-                              child: Text('Today, 12.30pm',
+                              child: Text('${DateFormat("dd-MM-yyyy hh:mm").format(DateTime.parse("${house.createdAt}"))}',
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
@@ -96,7 +109,7 @@ class HouseItem extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('N150,000',
+                            Text('N${house.price}',
                               style: TextStyle(
                                 color: Colors.lightBlue,
                                 fontSize: 14,

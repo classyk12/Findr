@@ -9,7 +9,7 @@ class FirebaseServices{
   final TextEditingController _codeController = new TextEditingController();
    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-    Future<bool> verifyPhoneNumber(String phoneNumber, BuildContext context) async {
+    Future verifyPhoneNumber(String phoneNumber, BuildContext context) async {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber, 
         timeout: Duration(seconds: 5),

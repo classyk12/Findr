@@ -12,6 +12,8 @@ class ApiHelper {
     var response;
     try {
       response = await http.get(_baseUrl + endpoint, headers: header);
+
+      print('reply api get request: $endpoint : ${response.statusCode}');
     } on SocketException {
       print('Error api get request: $endpoint');
       throw Exception('No Internet connection');
@@ -27,6 +29,7 @@ class ApiHelper {
     try {
       var b = json.encode(body);
       response = await http.post(_baseUrl + endpoint, body: b, headers: header);
+      print('reply api post request: $endpoint : ${response.statusCode}');
     } on SocketException {
       print('Error api post request: $endpoint');
 
@@ -42,6 +45,7 @@ class ApiHelper {
     try {
       var b = json.encode(body);
       response = await http.patch(_baseUrl + endpoint, body: b, headers: header);
+      print('reply api patch request: $endpoint : ${response.statusCode}');
     } on SocketException {
       print('Error api patch request: $endpoint');
 
@@ -55,6 +59,8 @@ class ApiHelper {
     var response;
     try {
       response = await http.delete(_baseUrl + endpoint);
+
+      print('reply api delete request: $endpoint : ${response.statusCode}');
 //      responseJson = _returnResponse(response);
     } on SocketException {
       throw Exception('No Internet connection');
