@@ -38,6 +38,7 @@ class AuthService {
   
 
   Future<BaseResponse<LoginResponse>> login(LoginModel model) async {
+
     return await _apiHelper
         .post(
             endpoint: 'login',
@@ -56,8 +57,10 @@ class AuthService {
       }
 
       //todo: display api error message directly to user
-      return BaseResponse<LoginResponse>.completed(
-          message: "something went wrong", data: jsonDecode(result.body));
+      print(result.body);
+
+      return BaseResponse<LoginResponse>.error(
+          message: "something went wrong");
 
       //catch the error
     }).catchError((e) =>

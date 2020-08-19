@@ -34,11 +34,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         brightness: Brightness.dark,
         title: Text('Profile', style: TextStyle(color: Colors.white),),
       ),
-      drawer: StudentDrawer(title: 'Profile', 
-        fullName: agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName ?? 'loading...',
-        email: agentProvider?.agentDashboardResponse?.data?.agentdetails?.email ?? 'loading..',
-         phoneNumber: agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber ?? 'loading..',
-         image: agentProvider?.agentDashboardResponse?.data?.agentdetails?.image),
+      drawer: StudentDrawer(title: 'Profile'),
 
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0),
@@ -57,12 +53,12 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       //           agentProvider?.agentDashboardResponse?.data?.agentdetails?.image ?? 'https://via.placeholder.com/150'),
                       //       ),
                           ProfilePicture(onPressed: () {}, 
-                          showCamera: false, image: agentProvider?.agentDashboardResponse?.data?.agentdetails?.image),
+                          showCamera: false, image: agentProvider?.agentDashboardResponse?.data?.studentData?.image),
                       Column(children: <Widget>[
 
                         Padding(
                           padding: const EdgeInsets.fromLTRB(15.0, 8.0, 0.0, 3.0),
-                          child: Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName ?? 'loading...',
+                          child: Text(agentProvider?.agentDashboardResponse?.data?.studentData?.fullName ?? 'loading...',
                               style: TextStyle(
                                 color: darkBG,
                                 fontSize: 20.0,
@@ -72,7 +68,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 3.0),
                           child: Text(
-                            agentProvider?.agentDashboardResponse?.data?.agentdetails?.userType ?? 'loading...',
+                            agentProvider?.agentDashboardResponse?.data?.studentData?.userType ?? 'loading...',
                             style: TextStyle(
                                 color: darkBG.withOpacity(0.7),
                                 fontSize: 15.0,
@@ -91,7 +87,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.phone_square, color: Colors.grey, size: 20),
                       XMargin(10.0),
-                      Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber ?? 'loading...',
+                      Text(agentProvider?.agentDashboardResponse?.data?.studentData?.phoneNumber ?? 'loading...',
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
@@ -116,7 +112,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.envelope, color: Colors.grey, size: 20.0,),
                       XMargin(10.0),
-                      Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.email ?? 'loading...',
+                      Text(agentProvider?.agentDashboardResponse?.data?.studentData?.email ?? 'loading...',
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,

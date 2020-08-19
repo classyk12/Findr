@@ -490,9 +490,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 //          ),
 //          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
           YMargin(30),
-          ChangeNotifierProvider(
-                     create: (context) => AgentProvider(),
-                      child: Consumer<AgentProvider>(
+           Consumer<AgentProvider>(
               builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
                 //upload image 
                 if(base64Image == null || base64Image.isEmpty){
@@ -527,7 +525,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   UserUpdateModel uploadModel = UserUpdateModel(image: full64,
                   fullName: fullName);
 
-                BaseResponse<AgentInfo> response = await provider.uploadImage(uploadModel);
+                BaseResponse<UserInfo> response = await provider.uploadImage(uploadModel);
 
                 if(response.status == Status.COMPLETED){
                   pref.setString("image", response.data.image);
@@ -565,7 +563,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 }
               }, height: 50,),
             ),
-          ),
+
           YMargin(10),
 
             Consumer<AgentProvider>(builder: (ctx, provider, widget) =>  FlatButton(

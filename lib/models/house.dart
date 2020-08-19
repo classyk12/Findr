@@ -1,20 +1,27 @@
+import 'dart:convert';
+
 import 'package:findr/models/base_model.dart';
 
 class HouseList extends BaseModel {
+
+      int id;
       String houseType;
-      List<String> image;
+      List<dynamic> image;
       String houseArea;
       int price;
 
-     HouseList(this.houseType,this.image, this.houseArea, this.price);
+     HouseList({this.id, this.houseType,this.image, this.houseArea, this.price});
 
      //use this to convert json to list/object
   factory HouseList.jsonConvert(Map<String, dynamic> item) {
+//    var image = json.decode(item['image']);
+//    print(image[0]);
     return HouseList(
-        item['house_type'],
-        item['image'],
-        item['price'],
-        item['house_area'])
+        id: item['id']  != null ? item['id'] : 0,
+        houseType: item['house_type'],
+        image:  item['image'] != null ? json.decode(item['image']) : null,
+        price: item['price'],
+        houseArea: item['house_area'])
     ..id = item['id']
     ..createdAt = DateTime.parse(item['created_at']);
 

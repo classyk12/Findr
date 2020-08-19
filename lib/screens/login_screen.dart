@@ -128,7 +128,7 @@ class LoginScreen extends StatelessWidget {
                   BaseResponse<LoginResponse> response = await provider.login(loginModel);
 
                   if(response.status == Status.COMPLETED && (response.data?.accessToken ?? '').isNotEmpty){
-//                    print(response.data.accessToken);
+                    print(response.data.accessToken);
 
                   SharedPreferences pref = await SharedPreferences.getInstance();
                   pref.setString('token', response.data.accessToken);
@@ -142,7 +142,8 @@ class LoginScreen extends StatelessWidget {
                     HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
                     houseProvider.getHouses();
 
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => DashboardScreen()));
+                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => DashboardScreen()), (route) => false);
                   }
                   else{
                     Navigator.pop(context);

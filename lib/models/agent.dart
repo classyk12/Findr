@@ -1,6 +1,6 @@
+import 'package:findr/models/house.dart';
 
-
-class AgentInfo {
+class UserInfo {
   int id;
   String fullName;
   String email;
@@ -15,12 +15,13 @@ class AgentInfo {
 
 //  List<AgentListing> listings;
 
-  AgentInfo(this.id,this.fullName, this.email, this.image, this.isVerified, this.location, this.phoneNumber, this.userType,this.createdAt, this.updatedAt,
+  UserInfo(this.id,this.fullName, this.email, this.image, this.isVerified, this.location, this.phoneNumber, this.userType,this.createdAt, this.updatedAt,
    this.ratings);
 
+
    //use this to convert json to list/object
-  factory AgentInfo.jsonConvert(Map<String, dynamic> item) {
-    return AgentInfo(
+  factory UserInfo.jsonConvert(Map<String, dynamic> item) {
+    return UserInfo(
         item['id'],
         item['fullname'],
         item['email'],
@@ -50,74 +51,75 @@ class AgentInfo {
 }
 
 class AgentDashBoardModel {
-AgentInfo agentdetails;
+UserInfo agentdetails;
 Listings agentlistings;
 
 AgentDashBoardModel({this.agentdetails, this.agentlistings});
 
     factory AgentDashBoardModel.fromJson(Map<String, dynamic> json) => AgentDashBoardModel(
-      agentdetails: AgentInfo.jsonConvert(json["agentdetails"] ?? json["data"]),
-      agentlistings: Listings.jsonConvert(json["agentlistings"] ?? null)  
+      agentdetails: json["agentdetails"] != null ? UserInfo.jsonConvert(json["agentdetails"]) : null,
+      agentlistings: json["agentlistings"] != null ? Listings.jsonConvert(json['agentlistings'])  : null
     );
    
 }
 
 
 
-class AgentListing{
-  int id;
-  String houseType;
-  String image;
-  String houseArea;
-  double price; 
-  DateTime createdAt;
-
-  AgentListing(this.id,  this.houseType, this.houseArea, this.image, this.price, this.createdAt);
-
-   //use this to convert json to list/object
-  factory AgentListing.jsonConvert(Map<String, dynamic> item) {
-    return AgentListing(
-        item['id'],
-        item['house_type'],
-        item['image'],
-        item['house_area'],
-        item['price'],
-        DateTime.parse(item['created_at']) ?? null);
-   // ..createdAt = DateTime.parse(item['created_at'])
-    //..updatedAt = DateTime.parse(item['updated_at']);
-  }
-}
+//class AgentListing{
+//  int id;
+//  String houseType;
+//  String image;
+//  String houseArea;
+//  double price;
+//  DateTime createdAt;
+//
+//  AgentListing(this.id,  this.houseType, this.houseArea, this.image, this.price, this.createdAt);
+//
+//   //use this to convert json to list/object
+//  factory AgentListing.jsonConvert(Map<String, dynamic> item) {
+//    return AgentListing(
+//        item['id'],
+//        item['house_type'],
+//        item['image'],
+//        item['house_area'],
+//        item['price'],
+//        DateTime.parse(item['created_at']) ?? null);
+//   // ..createdAt = DateTime.parse(item['created_at'])
+//    //..updatedAt = DateTime.parse(item['updated_at']);
+//  }
+//}
 
 class Listings{
     int currentPage;
     String firstPageUrl;
-    dynamic from;
+    int from;
     int lastPage;
     String lastPageUrl;
-    dynamic nextPageUrl;
+    String nextPageUrl;
     String path;
     int perPage;
-    dynamic prevPageUrl;
-    dynamic to;
+    String prevPageUrl;
+    int to;
     int total;
-    List<AgentListing> data;
+    List<HouseList> data;
 
-  Listings(this.currentPage, this.firstPageUrl,this.from ,this.lastPage, this.lastPageUrl, this.nextPageUrl, this.path, this.perPage, this.to, this.total, this.data);
+  Listings({this.currentPage, this.firstPageUrl,this.from ,this.lastPage, this.lastPageUrl,
+    this.nextPageUrl, this.path, this.perPage, this.to, this.total, this.data});
 
    //use this to convert json to list/object
   factory Listings.jsonConvert(Map<String, dynamic> item) {
     return Listings(
-        item['current_page'],
-        item['first_page_url'],
-        item['from'],
-        item['last_page'],
-        item['last_page_url'],
-         item['next_page_url'],
-        item['path'],
-        item['per_page'],
-        item['to'],
-        item['total'],
-        item['data'] != null ? (item['data'] as List).map((i) => AgentListing.jsonConvert(i)).toList() : null,
+      currentPage: item['current_page'],
+      firstPageUrl: item['first_page_url'],
+      from: item['from'],
+      lastPage: item['last_page'],
+      lastPageUrl: item['last_page_url'],
+      nextPageUrl: item['next_page_url'],
+      path: item['path'],
+      perPage:  item['per_page'],
+      to:  item['to'],
+      total: item['total'],
+        data: item['data'] != null ? (item['data'] as List).map((i) => HouseList.jsonConvert(i)).toList() : null,
         
         );
       

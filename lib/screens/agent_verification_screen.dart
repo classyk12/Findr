@@ -160,7 +160,7 @@ class _AgentVerificationScreenState extends State<AgentVerificationScreen> {
                  // String full64 = 'data:image/jpeg;base64';
                   AgentUploadModel uploadModel = AgentUploadModel(full64);
 
-                BaseResponse<AgentInfo> response = await provider.uploadID(uploadModel);
+                BaseResponse<UserInfo> response = await provider.uploadID(uploadModel);
 
                 if(response.status == Status.COMPLETED){
                  // pref.setString("image", response.data.image);
