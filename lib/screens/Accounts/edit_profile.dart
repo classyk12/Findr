@@ -30,8 +30,8 @@ Future<dynamic> file;
  @override
   void initState() {
    agentProvider = Provider.of<AgentProvider>(context);
-    emailController.text = agentProvider?.agentDashboardResponse?.data?.agentdetails?.email;
-    fullNameController.text = agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName;
+    emailController.text = agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.email;
+    fullNameController.text = agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.fullName;
     // getProfile();   
     super.initState();
   }
@@ -95,8 +95,8 @@ Future<dynamic> file;
                           print(emailController.text);
                            print(fullNameController.text);
 
-                            print(agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName);
-                           print(agentProvider?.agentDashboardResponse?.data?.agentdetails?.email);
+                            print(agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.fullName);
+                           print(agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.email);
                            
                         },
                         child: Text(
@@ -126,7 +126,7 @@ Future<dynamic> file;
                  return Image.file(File(data.data.path), fit: BoxFit.fitWidth, width: 120);
                 }
                 else{
-                  return Image.network(agentProvider?.agentDashboardResponse?.data?.agentdetails?.image, 
+                  return Image.network(agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.image, 
                    fit: BoxFit.fitWidth, width: 120);
                   //return Text('no image selected',style:TextStyle(fontSize: 12));
                 }
@@ -254,7 +254,7 @@ Future<dynamic> file;
               actions: <Widget>[
                 FlatButton(onPressed: () async{
 
-                  if(agentProvider?.agentDashboardResponse?.data?.agentdetails?.userType?.toLowerCase() == "agent"){
+                  if(agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.userType?.toLowerCase() == "agent"){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> AgentProfileScreen()));
                   }
                   else{

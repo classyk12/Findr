@@ -69,12 +69,12 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     children: <Widget>[
 
                       ProfilePicture(onPressed: () {}, showCamera: false,
-                       image: agentProvider?.agentDashboardResponse?.data?.agentdetails?.image),
+                       image: agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.image),
 
                       Column(children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.fromLTRB(15.0, 8.0, 0.0, 3.0),
-                          child: Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName,
+                          child: Text(agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.fullName,
                               style: TextStyle(
                                 color: darkBG,
                                 fontSize: 16.0,
@@ -86,7 +86,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Text(
-                              agentProvider?.agentDashboardResponse?.data?.agentdetails?.userType,
+                              agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.userType,
                               style: TextStyle(
                                   color: darkBG.withOpacity(0.7),
                                   fontSize: 15.0,
@@ -95,7 +95,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                             ),
                           ),
                           
-                          agentProvider?.agentDashboardResponse?.data?.agentdetails?.isVerified?.toLowerCase() == "verified"
+                          agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.isVerified?.toLowerCase() == "verified"
                               ? Container(
                             decoration: BoxDecoration(
                               color: darkAccent,
@@ -133,7 +133,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                       Icon(LineIcons.phone_square, color: Colors.grey, size: 20),
                       XMargin(10.0),
                       Text(
-                        agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber,
+                        agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.phoneNumber,
                         //'(+234)-903-566-1212',
                           style: TextStyle(
                               color: Colors.grey,
@@ -159,7 +159,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.envelope, color: Colors.grey, size: 20.0,),
                       XMargin(10.0),
-                      Text(agentProvider?.agentDashboardResponse?.data?.agentdetails?.email,
+                      Text(agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.email,
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
@@ -174,7 +174,7 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
                     children: <Widget>[
                       Icon(LineIcons.cc_mastercard, color: Colors.grey),
                       XMargin(10.0),
-                      agentProvider?.agentDashboardResponse?.data?.agentdetails?.isVerified?.toLowerCase() != "verified"
+                      agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails?.isVerified?.toLowerCase() != "verified"
                           ? Text('Not Verified',
                           style: TextStyle(
                               color: Colors.red,
