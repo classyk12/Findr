@@ -74,6 +74,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -130,6 +132,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )
         ],
       ),
+
+
       body: Stack(
 //              fit: StackFit.expand,
 //            crossAxisAlignment: CrossAxisAlignment.center,
@@ -283,9 +287,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 color: darkBG,
                 fontWeight: FontWeight.w600),
           ),
+
           PhoneField(hintText: '(0) 7089175605', onChanged: (value){
             phoneNumberController.text = value;
           }, controller:  phoneNumberController ,),
+
+
           YMargin(20),
           Text(
             'E-mail',
@@ -308,54 +315,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             padding: const EdgeInsets.only(left: 10.0, right: 20.0),
             child: PinField(pinController: pinController),
           ),
-//          Container(
-//            decoration: BoxDecoration(
-//              boxShadow: [
-//                new BoxShadow(
-//                  offset: Offset(0, 8),
-//                  spreadRadius: -10,
-//                  color: darkBG.withOpacity(0.3),
-//                  blurRadius: 24,
-//                ),
-//              ],
-//            ),
-//            child: Material(
-//              child: TextFormField(
-//                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkBG, letterSpacing: 10.0),
-////          cursorColor: Colors.white,
-//                keyboardType: TextInputType.number,
-//                controller: null,
-//                validator: (value){
-//                  return null;
-//                },
-//
-//                inputFormatters: [
-//                  limiter.LengthLimitingTextInputFormatter(4)
-//                ],
-//
-//                decoration: InputDecoration(
-//
-//                  hintText: '****',
-//                  hintStyle: TextStyle(fontSize: 16),
-//                  contentPadding: EdgeInsets.all(10.0),
-//                  border: OutlineInputBorder(
-//                    borderRadius: BorderRadius.circular(20.0),
-//                    borderSide: BorderSide(color: Colors.transparent,),
-//                  ),
-//                  enabledBorder: OutlineInputBorder(
-//                    borderSide: BorderSide(color: Colors.transparent,),
-//                    borderRadius: BorderRadius.circular(20.0),
-//                  ),
-//
-//                  focusedBorder: OutlineInputBorder(
-//                    borderSide: BorderSide(color: Colors.transparent,),
-//                    borderRadius: BorderRadius.circular(20.0),
-//                  ),
-//
-//                ),
-//              ),
-//            ),
-//          ),
           YMargin(30),
           Consumer<AuthProvider>(
             builder: (ctx, provider, widget) => Button(text: 'Continue', onPressed: () async {
@@ -490,6 +449,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 //          ),
 //          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
           YMargin(30),
+          
            Consumer<AgentProvider>(
               builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
                 //upload image 
@@ -525,7 +485,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   UserUpdateModel uploadModel = UserUpdateModel(image: full64,
                   fullName: fullName);
 
-                BaseResponse<UserInfo> response = await provider.uploadImage(uploadModel);
+                BaseResponse<UserInfo> response = await provider.updateProfile(uploadModel);
 
                 if(response.status == Status.COMPLETED){
                   pref.setString("image", response.data.image);
@@ -563,6 +523,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 }
               }, height: 50,),
             ),
+
 
           YMargin(10),
 
@@ -604,6 +565,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
+
+
 
 
     displayDialog(){

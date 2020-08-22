@@ -1,5 +1,6 @@
 import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/screens/Accounts/edit_profile.dart';
+import 'package:findr/screens/student_drawer.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/profile_picture.dart';
@@ -13,7 +14,6 @@ class AgentProfileScreen extends StatefulWidget {
 }
 
 class _AgentProfileScreenState extends State<AgentProfileScreen> {
-  bool _isVerified = true;
   AgentProvider agentProvider;
 
   @override
@@ -23,39 +23,53 @@ class _AgentProfileScreenState extends State<AgentProfileScreen> {
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        iconTheme: new IconThemeData(color: Colors.white),
+        backgroundColor: darkAccent,
+//        backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
+//        automaticallyImplyLeading: false,
         centerTitle: false,
-        title: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 20.0,
-            ),
-            Text('Back',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 16.0,
-                ))
-          ]),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0).add(EdgeInsets.only(right: 6)),
-            child: Image.asset(
-              'assets/images/Findr_logo.png',
-              height: 60,
-              width: 60,
-            ),
-          )
-        ],
+        brightness: Brightness.dark,
+        title: Text('Profile', style: TextStyle(color: Colors.white),),
       ),
+
+      drawer: StudentDrawer(title: 'Profile'),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   centerTitle: false,
+      //   title: InkWell(
+      //     onTap: () {
+      //       Navigator.pop(context);
+      //     },
+      //     child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      //       Icon(
+      //         Icons.arrow_back_ios,
+      //         color: Colors.black,
+      //         size: 20.0,
+      //       ),
+      //       Text('Back',
+      //           style: TextStyle(
+      //             fontWeight: FontWeight.bold,
+      //             color: Colors.black,
+      //             fontSize: 16.0,
+      //           ))
+      //     ]),
+      //   ),
+      //   actions: <Widget>[
+      //     Padding(
+      //       padding: const EdgeInsets.all(12.0).add(EdgeInsets.only(right: 6)),
+      //       child: Image.asset(
+      //         'assets/images/Findr_logo.png',
+      //         height: 60,
+      //         width: 60,
+      //       ),
+      //     )
+      //   ],
+      // ),
+
+
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: ListView(

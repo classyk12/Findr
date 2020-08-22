@@ -110,10 +110,16 @@ class StudentDrawer extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               if (title != titles[1]) {
+                              //route based on accessType
+                            agentProvider?.agentDashboardResponse?.data?.userType?.toLowerCase() == "agent" ?
+
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            StudentProfileScreen()));
+                                            AgentProfileScreen())) :   Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            StudentProfileScreen()))  ;
                               } else {
                                 Navigator.pop(context);
                               }

@@ -11,12 +11,12 @@ class UserInfo {
   String userType;
   DateTime createdAt;
   DateTime updatedAt;
-  int ratings;
+  //int ratings;
 
 //  List<AgentListing> listings;
 
   UserInfo(this.id,this.fullName, this.email, this.image, this.isVerified, this.location, this.phoneNumber, this.userType,this.createdAt, this.updatedAt,
-   this.ratings);
+  );
 
 
    //use this to convert json to list/object
@@ -39,7 +39,7 @@ class UserInfo {
  //}
        // item['agentlistings'] != null ? (item['agentlistings'] as List).map((i) => AgentListing.jsonConvert(i)).toList() : null,
 
-        item['avg_rating'],
+      //  item['avg_rating'],
 //       item['agentlistings'] != null
 //          ? new List<AgentListing>.from(item['agentlistings'])
 //          : null

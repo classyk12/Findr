@@ -14,7 +14,8 @@ class AgentProvider extends ChangeNotifier{
   BaseResponse<UserInfo> updateResponse = BaseResponse<UserInfo>.completed();
   BaseResponse<UserDashBoard> agentDashboardResponse =  BaseResponse<UserDashBoard>.completed();
 
-  Future<BaseResponse<UserInfo>> uploadImage(UserUpdateModel model) async{
+
+  Future<BaseResponse<UserInfo>> updateProfile(UserUpdateModel model) async{
     //print(model.image);
     updateResponse = BaseResponse<UserInfo>.loading(message: '');
     notifyListeners();

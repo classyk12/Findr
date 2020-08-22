@@ -21,6 +21,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   Widget build(BuildContext context) {
 
     agentProvider = Provider.of<AgentProvider>(context);
+    
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
@@ -34,6 +35,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         brightness: Brightness.dark,
         title: Text('Profile', style: TextStyle(color: Colors.white),),
       ),
+
+
       drawer: StudentDrawer(title: 'Profile'),
 
       body: Padding(

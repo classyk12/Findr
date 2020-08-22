@@ -78,24 +78,33 @@ ApiHelper _apiHelper = ApiHelper();
       SharedPreferences pref = await SharedPreferences.getInstance();
            String token = pref.getString('token');
      headers['Authorization'] = 'bearer ' + token;
-    return await _apiHelper
-        .patch(endpoint: 'users', body: model.toMap(), header: headers)
-        .then((result) {
-      if (result.statusCode == 200) {
+
+     try{
+       var response = await _apiHelper.patch(endpoint: 'users', body: model.toMap(), header: headers);
+
+       if(response != null){
+        if (response.statusCode == 200) {
         //testing to see the content of api response
-        final jsonData = json.decode(result.body)['data'];
+        final jsonData = json.decode(response.body)['data'];
         final userdata = UserInfo.jsonConvert(jsonData);
         print(userdata);
         return BaseResponse<UserInfo>.completed(
             message: 'registration success', data: userdata);
       }
-
+       }
       //todo: display api error message directly to user
       return BaseResponse<UserInfo>.error(
-          message: "something went wrong: ${result.body}");
+          message: "something went wrong: ${response.body}");
+     }
+ catch (error) {
+        return BaseResponse<UserInfo>.error(message: 'An error occured!');
 
-      //catch the error
-    }).catchError((e) => BaseResponse<UserInfo>.error(message: e.toString()));
   }
+   
+     // catchError((e) => BaseResponse<UserInfo>.error(message: e.toString()));
+}
+
+
 
 }
+
