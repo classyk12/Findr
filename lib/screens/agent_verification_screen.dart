@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:findr/models/agent.dart';
 import 'package:findr/models/base_response.dart';
 import 'package:findr/providers/agent_provider.dart';
-import 'package:findr/screens/student_dashboard.dart';
+import 'package:findr/screens/dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';

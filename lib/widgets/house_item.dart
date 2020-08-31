@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:findr/models/house.dart';
+import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/screens/agent_details_screen.dart';
 import 'package:findr/utils/constants.dart';
 import 'package:findr/utils/margin.dart';
@@ -8,20 +9,23 @@ import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class HouseItem extends StatelessWidget {
 
   final HouseList house;
+  
 
   HouseItem({this.house}): assert(house != null);
 
   @override
   Widget build(BuildContext context) {
+    AgentProvider agentProvider  = Provider.of<AgentProvider>(context);
     String img = houseImage;
     if(house.image.length > 0) {
       //get a random image from list of house image
       img = house.image[Random().nextInt(house.image.length)];
-    }
+   // }
     return Card(
       margin: EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(
@@ -175,7 +179,9 @@ class HouseItem extends StatelessWidget {
                         ),
 
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.pushNamed(context, '/house-details');
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('View Details',
@@ -195,5 +201,12 @@ class HouseItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  else{
+    return Center(
+    child: agentProvider.agentDashboardResponse.data.userType.toLowerCase() == 'agent' ? Text('This agent does not have a listing yet!') : Text('No listing found')
+    );
+  }
   }
 }

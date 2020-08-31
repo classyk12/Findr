@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
 class AgentDetailsScreen extends StatelessWidget {
+
  bool _isVerified = true;
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightPrimary,
@@ -191,6 +193,7 @@ class AgentDetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  
                   Align(
                     alignment: Alignment.topCenter,
                     child: Container(

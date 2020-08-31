@@ -97,7 +97,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               fontWeight: FontWeight.w300)),
                       Spacer(),
                       InkWell(
-                          onTap: () {},
+                          onTap: () {
+
+                          },
                           child: Padding(
                             padding: const EdgeInsets.only(left:8.0, right: 8.0),
                             child: Text(
@@ -167,8 +169,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               padding: const EdgeInsets.only(left: 30.0, right: 15.0, top: 10.0),
               child: Column(
                 children: <Widget>[
-
-
 
                   Row(
                     mainAxisSize: MainAxisSize.max,

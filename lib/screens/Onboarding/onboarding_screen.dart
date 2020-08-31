@@ -9,7 +9,7 @@ import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/agent_verification_screen.dart';
-import 'package:findr/screens/student_dashboard.dart';
+import 'package:findr/screens/dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/button.dart';

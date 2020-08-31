@@ -32,7 +32,7 @@ class HouseList extends BaseModel {
 class HouseFormModel{
       String houseType;
       String description;
-      int caretakerFee;
+      String caretakerFee;
       List<String> image;
       String totalRooms;
       String houseArea;

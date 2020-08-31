@@ -1,14 +1,15 @@
 import 'package:findr/models/agent.dart';
 import 'package:findr/models/base_response.dart';
-import 'package:findr/models/house.dart';
 import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/student_drawer.dart';
+import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:findr/widgets/house_item.dart';
 import 'package:findr/widgets/loader.dart';
 import 'package:findr/widgets/search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -54,17 +55,41 @@ class _DashboardState extends State<DashboardScreen> {
         if (agentHouses.data.length > 0) {
           return Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 15),
-            child: ListView.builder(
+            child: Column(
+
+              children:<Widget>[
+                 Text('Im the new guy here'),
+                 YMargin(20),
+            ListView.builder(
                 itemCount: agentHouses.data.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) => HouseItem(house: agentHouses.data[index],)),
+              ]
+            )
+           
           );
         } else {
-          return Center(child: Text('no agent listings available'));
+
+          return Center(child: 
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+                 Lottie.asset('assets/lottie/emptyHouse.json', height: 100, width: 100),
+                Text('no listings here!'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(onPressed: (){}, child: Text('Add a listing'),),
+                )
+                //Button(text: 'Add a Listing', onPressed: (){}, height: 100, width: 100)
+
+            ]
+          ));
+        
         }
-      } else {
-
-
+      }
+      
+       else {
         if (houseProvider?.houseResponse?.status == Status.LOADING) {
           return Loading();
         } else if (houseProvider.houseResponse.status == Status.COMPLETED &&
@@ -73,10 +98,18 @@ class _DashboardState extends State<DashboardScreen> {
           if (houses.length > 0) {
             return Padding(
                 padding: EdgeInsets.only(left: 20, right: 20, top: 15),
-                child: ListView.builder(
+                child: Column(
+                  children: <Widget>[
+                    Text('i am the student header'),
+                    YMargin(20),
+                     ListView.builder(
                     itemCount: houses.length,
                     shrinkWrap: true,
-                    itemBuilder: (context, index) => HouseItem(house: houses[index],)));
+                    itemBuilder: (context, index) => HouseItem(house: houses[index],))
+                  ],
+                ),
+                
+               );
           } else {
             return Center(
               child: Text('student Empty list'),

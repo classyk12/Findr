@@ -6,7 +6,7 @@ import 'package:findr/screens/Onboarding/landing_page.dart';
 import 'package:findr/screens/bookmark_screen.dart';
 import 'package:findr/screens/favourite_screen.dart';
 import 'package:findr/screens/setting_screen.dart';
-import 'package:findr/screens/student_dashboard.dart';
+import 'package:findr/screens/dashboard.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
