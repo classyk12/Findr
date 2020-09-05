@@ -39,18 +39,32 @@ String _endpoint = "houses";
   }
 
 
-    Future<BaseResponse<HouseDetail>> getById (int id) {
-       _headers['token'] = '';
-    return _apiHelper.get(endpoint:'$_endpoint/$id', header: _headers).then((data) {
-      //check if api call returned 200
-      if (data.statusCode == 200) {
-        //convert data to a map type
-        final jsonData = json.decode(data.body);
-        final house = HouseDetail.jsonConvert(jsonData);
-        return BaseResponse<HouseDetail>.completed(message: 'retrieved successfully', data: house);
+    Future<BaseResponse<HouseDetail>> getById (int id) async {
+      SharedPreferences pref = await  SharedPreferences.getInstance();
+       String token = pref.getString('token');
+       _headers['token'] = token;
+
+       try{
+        var response = await _apiHelper.get(endpoint:'$_endpoint/$id', header: _headers);
+        if(response != null){
+        if (response.statusCode == 200) {
+        //testing to see the content of api response
+        final jsonData = json.decode(response.body)['data'];
+        final userdata = HouseDetail.jsonConvert(jsonData);
+        print(userdata);
+        return BaseResponse<HouseDetail>.completed(
+            message: 'retrieved successfully', data: userdata);
       }
-      return BaseResponse<HouseDetail>.error(message: 'An error occured!');
-    }).catchError((_) => BaseResponse<HouseDetail>.error(message: 'An error occured!'));
+       }
+      //todo: display api error message directly to user
+      return BaseResponse<HouseDetail>.error(
+          message: "something went wrong: ${response.body}");
+       }
+       catch(error){
+         return BaseResponse<HouseDetail>.error(message: 'An error occured!');
+       }
+    
+      
   }
 
  Future<BaseResponse<HouseDetail>> create(HouseFormModel model) {

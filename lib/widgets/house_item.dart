@@ -1,9 +1,9 @@
-import 'dart:math';
+
 
 import 'package:findr/models/house.dart';
 import 'package:findr/providers/agent_provider.dart';
+import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/agent_details_screen.dart';
-import 'package:findr/utils/constants.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +21,15 @@ class HouseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AgentProvider agentProvider  = Provider.of<AgentProvider>(context);
-    String img = houseImage;
-    if(house.image.length > 0) {
+
+    String img ;
+    if(house.image.length > 0) {     
+      img = house.image[1];
       //get a random image from list of house image
-      img = house.image[Random().nextInt(house.image.length)];
+      //display the first image in the list of images
+
+
+     // img = house.image[Random().nextInt(house.image.length)];
    // }
     return Card(
       margin: EdgeInsets.only(bottom: 10),
@@ -44,7 +49,7 @@ class HouseItem extends StatelessWidget {
                   FadeInImage.assetNetwork(image: img,
                   placeholder: 'assets/images/Findr_logo.png', width: screenWidth(context, percent: 0.3),
                   height: 128,
-                  fit: BoxFit.cover,),
+                  fit: BoxFit.cover),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Container(
@@ -178,17 +183,20 @@ class HouseItem extends StatelessWidget {
                           width: 0,
                         ),
 
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, '/house-details');
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('View Details',
-                              style: TextStyle(
-                                color: Colors.lightBlue,
-                                fontSize: 13,
-                              ),),
+                         Consumer<HouseProvider>(
+                            builder: (ctx, provider, widget) => InkWell(
+                            onTap: (){
+                              provider.getById(house.id);
+                              Navigator.pushNamed(context, '/house-details');
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('View Details',
+                                style: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: 13,
+                                ),),
+                            ),
                           ),
                         ),
                       ],

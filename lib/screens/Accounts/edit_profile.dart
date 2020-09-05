@@ -29,7 +29,7 @@ TextEditingController emailController = new TextEditingController();
 //TextEditingController phoneNumberController = new TextEditingController();
 
 Future<dynamic> file;
-  String base64Image;
+  String base64Image = '';
   String fileName;
   final picker = ImagePicker();
 
@@ -98,7 +98,11 @@ Future<dynamic> file;
                     Consumer<AgentProvider>(builder: (ctx, provider, widget) =>  FlatButton(
                                 padding: EdgeInsets.only(left: 30),
                           onPressed: () async {
-                            if(emailController.text.isEmpty || fullNameController.text.isEmpty){
+                          //  print(emailController.text);
+                          //  print(fullNameController.text);
+                          // print(base64Image);
+                          //  return;
+                            if(emailController.text.length < 1 || fullNameController.text.length < 1){
                               //display snackbar/alert
                               print('fields cannot be empty');
                               return;
@@ -118,7 +122,7 @@ Future<dynamic> file;
                     ));
 
 
-                  UserUpdateModel uploadModel = UserUpdateModel(image: base64Image.isEmpty ? null : base64Image,
+                  UserUpdateModel uploadModel = UserUpdateModel(image: base64Image,
                   fullName: fullNameController.text);
 
                 BaseResponse<UserInfo> response = await provider.updateProfile(uploadModel);
@@ -179,9 +183,9 @@ Future<dynamic> file;
                   // setState(() {
                   base64Image = 'data:image/$fileName;base64,' + base64Encode(File(data.data.path).readAsBytesSync());
                    fileName = data.data.path.split(".").last;
-                   print(base64Image);
+                
                   // Navigator.pop(context);
-                   return Image.file(File(data.data.path), fit: BoxFit.fitWidth, width: 120);
+                   return Image.file(File(data.data.path), fit: BoxFit.fitWidth);
                 }
                 else{
                    if(agentProvider?.agentDashboardResponse?.data?.userType?.toLowerCase() == 'agent'){
@@ -190,7 +194,7 @@ Future<dynamic> file;
                     }
 
                     else{
-                      return Image.network(agentProvider?.agentDashboardResponse?.data?.studentData?.image ??  'https://via.placeholder.com/150');
+                      return Image.network(agentProvider?.agentDashboardResponse?.data?.studentData?.image ??  'https://via.placeholder.com/150',  fit: BoxFit.fitWidth, width: 120);
                       
                     }
 
@@ -202,6 +206,7 @@ Future<dynamic> file;
               future: file
               ),
                   onPressed: () {
+                  //showConfirmDialogggg();
                  displayDialog();
                 }, showCamera: true, 
                 ))),
@@ -256,24 +261,37 @@ Future<dynamic> file;
                 // PhoneField(hintText: 'Phone number', onChanged: null,
                 //  controller: TextEditingController(text: agentProvider?.agentDashboardResponse?.data?.agentdetails?.phoneNumber)),
                 YMargin(30),
-                Center(
-                    child: FlatButton(
-                  child: Text('Cancel',
-                      style: TextStyle(color: Colors.red, fontSize: 16)),
-                  onPressed: () {
-                    // //check if the values have last changed before cancelling
-                    //    if(agentProvider?.agentDashboardResponse?.data?.agentdetails?.fullName!= fullNameController.text ||
-                    //     agentProvider?.agentDashboardResponse?.data?.agentdetails?.email != emailController.text || base64Image.isNotEmpty){
-                    //       showConfirmDialog();
-                    //       //display alert
-                    //     // return;
-                    //    }
-                       
+
+                FlatButton(onPressed: (){
+                    if(agentProvider?.agentDashboardResponse?.data?.userType?.toLowerCase() == 'agent'){
+                    var agentInfo = agentProvider?.agentDashboardResponse?.data?.agentData?.agentdetails;
+                  //check if the values have last changed before cancelling
+                    if( agentInfo.fullName.toLowerCase() !=  fullNameController.text.toLowerCase() || 
+                  agentInfo.email.toLowerCase() != emailController.text.toLowerCase() || base64Image.isNotEmpty) {
+                    showConfirmDialogggg();                        
+                     }
+                     else{
                        Navigator.pop(context);
-                       // Navigator.pop(context, MaterialPageRoute(builder: (_)=> AgentProfileScreen()));
-                  },
-                ))
-              ],
+                     }
+                       
+                       
+                   }
+                   else if(agentProvider?.agentDashboardResponse?.data?.userType?.toLowerCase() == 'student'){
+                     var studentInfo = agentProvider?.agentDashboardResponse?.data?.studentData;
+                      if( studentInfo.fullName.toLowerCase() !=  fullNameController.text.toLowerCase() || 
+                    studentInfo.email.toLowerCase() != emailController.text.toLowerCase() || base64Image.isNotEmpty) {
+                     showConfirmDialogggg();                        
+                    }
+                    else{
+                      Navigator.pop(context);
+                    }
+                      
+                   }
+
+                }, child: Text('cancel', style: TextStyle(color:Colors.red, fontSize: 20))
+                
+              
+                 ) ],
             ),
           ),
         ),
@@ -284,7 +302,7 @@ Future<dynamic> file;
 
     displayDialog(){
     //build widget to collect code from user
-    showDialog(context: context,barrierDismissible: true, builder: (context){
+    showDialog(context: context,barrierDismissible: true ,builder: (context){
        return AlertDialog(
               title: Text('Quick actions?', style: TextStyle(color: darkBG, fontSize:20)),
               content: Text('Choose from the options below'),
@@ -314,9 +332,9 @@ Future<dynamic> file;
     });
     }
 
-    showConfirmDialog(){
+    showConfirmDialogggg(){
     //build widget to collect code from user
-    showDialog(context: context,barrierDismissible: true, builder: (context){
+    showDialog(context: context,barrierDismissible: false, builder: (context){
        return AlertDialog(
               title: Text('Quick actions?', style: TextStyle(color: darkBG, fontSize:20)),
               content: Text('One or more fields have changed, proceed to cancel?'),
@@ -335,7 +353,7 @@ Future<dynamic> file;
                  child: Text('cancel', style: TextStyle(color: darkBG, fontSize: 20))),
 
                 FlatButton(onPressed: () async{
-                 return;
+                Navigator.pop(context);
                 }, child: Text('continue editing',style: TextStyle(color: darkBG, fontSize: 20)))
              ],
 

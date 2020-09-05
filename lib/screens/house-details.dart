@@ -1,7 +1,12 @@
+
+import 'package:findr/models/base_response.dart';
+import 'package:findr/models/house.dart';
 import 'package:findr/providers/agent_provider.dart';
 import 'package:findr/providers/house_provider.dart';
 import 'package:findr/utils/margin.dart';
 import 'package:findr/utils/themes.dart';
+import 'package:findr/widgets/button.dart';
+import 'package:findr/widgets/loader.dart';
 import 'package:findr/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,16 +20,25 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
   AgentProvider agentProvider;
   HouseProvider houseProvider;
 
-  final int _numPages = 3;
+  //final int _numPages = 0;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
+
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
-    for (int i = 0; i < _numPages; i++) {
+    for (int i = 0; i < houseProvider?.houseDetailResponse?.data?.image?.length;i++) {
       list.add(i == _currentPage ? _indicator(true) : _indicator(false));
     }
     return list;
+  }
+
+   List<Widget> _buildHouseImages() {
+    List<Widget> images = [];
+     for (int i = 0; i < houseProvider?.houseDetailResponse?.data?.image?.length;i++) {
+      images.add(Image.network(houseProvider?.houseDetailResponse?.data?.image[i]));
+    }
+    return images;
   }
 
   Widget _indicator(bool isActive) {
@@ -41,14 +55,18 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
   }
 
   @override
-  void initState() {
-    agentProvider = Provider.of<AgentProvider>(context, listen: false);
+  void initState() {   
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    houseProvider = Provider.of<HouseProvider>(context, listen: false);
+    houseProvider = Provider.of<HouseProvider>(context, listen: true);
+    agentProvider = Provider.of<AgentProvider>(context, listen: false);
+   
+   var img = houseProvider?.houseDetailResponse?.data?.image;
+   print(img);
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       resizeToAvoidBottomPadding: true,
@@ -62,6 +80,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
           onTap: () {
             Navigator.pop(context);
           },
+
           child: SingleChildScrollView(
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +134,19 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
           ),
         ),
       ),
-      body: ListView(
+      body: _detail());
+
+  }
+
+     Widget  _detail(){
+      
+      if(houseProvider.houseDetailResponse.status == Status.LOADING){
+        return Loading();
+      }
+      else if(houseProvider?.houseDetailResponse?.status ==
+            Status.COMPLETED && houseProvider.houseDetailResponse.data != null){
+              HouseDetail detail = houseProvider.houseDetailResponse.data;
+          return ListView(
 //            shrinkWrap: true,
         // mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -139,14 +170,9 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                       _currentPage = page;
                     });
                   },
-                  children: <Widget>[
-                    Image.asset('assets/images/testhouse.jpg',
-                        width: MediaQuery.of(context).size.width),
-                    Image.asset('assets/images/testhouse.jpg',
-                        width: MediaQuery.of(context).size.width),
-                    Image.asset('assets/images/testhouse.jpg',
-                        width: MediaQuery.of(context).size.width),
-                  ],
+                  children:
+                    _buildHouseImages(),
+                
                 ),
               ),
 
@@ -167,17 +193,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                   ),
                 ),
 
-              // Padding(
-              //   padding: const EdgeInsets.all(20.0),
-              //   child: Align(
-              //     alignment: Alignment.bottomCenter,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       crossAxisAlignment: CrossAxisAlignment.end,
-              //       children: _buildPageIndicator(),
-              //     ),
-              //   ),
-              // ),
+    
 
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -204,13 +220,22 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
               child: Column(children: <Widget>[
 
                 Padding(
-                  padding: const EdgeInsets.only(bottom:6.0),
-                  child: Row(children: <Widget>[
-                    Text('Amusa 5 Bungalow Itamerin', style: TextStyle(color:Colors.blueGrey[800],fontSize:20, fontWeight:FontWeight.bold)),
-                    XMargin(40),
-                    InkWell(onTap: (){}, child: Icon(Icons.bookmark, color: Colors.grey[600])),
-                    XMargin(10),
-                    InkWell(onTap: (){}, child: Icon(Icons.favorite_border, color: Colors.grey[600])),
+                  padding: const EdgeInsets.only(bottom:6.0, right:10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                    Text('${detail.houseType}', style: TextStyle(color:Colors.blueGrey[800],fontSize:20, fontWeight:FontWeight.bold)),
+
+                    Row(
+                     
+                      children: <Widget>[
+                        XMargin(40),
+                         InkWell(onTap: (){}, child: Icon(Icons.bookmark, color: Colors.grey[600])),
+                        XMargin(10),
+                       InkWell(onTap: (){}, child: Icon(Icons.favorite_border, color: Colors.grey[600])),
+                      ],
+                    ),
+                   
                   ]),
                 ),
 
@@ -218,7 +243,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                   padding: const EdgeInsets.only(bottom:6.0),
                   child: Row(children: <Widget>[
                     Icon(Icons.location_on, color: Colors.grey[700], size: 12),
-                    Text('Itamerin, Ago Iwoye, Ogun state', style: TextStyle(color: Colors.grey[600])),
+                    Text('${detail.houseArea}', style: TextStyle(color: Colors.grey[600])),
                   ]),
                 ),
                 Row(
@@ -228,8 +253,9 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                     padding: const EdgeInsets.only(bottom:8.0),
                     child: Row(
                       children: <Widget>[
-                        Text('₦150,000', style: TextStyle(fontSize: 25,  color: Colors.blue[400], fontWeight: FontWeight.bold)),
-                        Text('  (Negotiable)',style: TextStyle(fontSize: 12,  color: Colors.grey[400])),
+                        Text('₦${detail.price}', style: TextStyle(fontSize: 25,  color: Colors.blue[400], fontWeight: FontWeight.bold)),
+                        Text(' + ₦${detail.caretakerFee}', style: TextStyle(fontSize: 15,  color: Colors.green[400], fontWeight: FontWeight.bold)),
+                        Text(detail.isNeigotiable == 1 ? '  (Negotiable)' :'    (Non-Negotiable)',style: TextStyle(fontSize: 12,  color: Colors.grey[400])),
                       ],
                     ),
                   ),
@@ -237,7 +263,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
 
                   Padding(
                     padding: const EdgeInsets.only(right:8.0),
-                    child: Text('Today 2:50pm',style: TextStyle(fontSize: 10,  color: Colors.grey[400])),
+                    child: Text('${detail.createdAt}',style: TextStyle(fontSize: 10,  color: Colors.grey[400])),
                   ),
                 ]),
                 Row(
@@ -274,7 +300,16 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                                 Icon(Icons.phone, color: Colors.white),
                                 Text('  Show Contact')
                               ]),
-                              onPressed: () {}),
+                              onPressed: () {
+                                return showModalBottomSheet(context: context, builder: (ctx){
+                                   return Container(
+            height: MediaQuery.of(context).size.height  * 0.2,
+            child: Center(
+              child: Text("Show Contact here"),
+            ),
+          );
+                                });
+                              }),
                         ),
                       )
                     ]),
@@ -297,7 +332,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                     children: <Widget>[
                     Text('Condition    ', style: TextStyle(color:Colors.grey[600])),
                     Container(color: Colors.grey, height: 1.4, width: 200),
-                    Text('    New', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
+                    Text(detail.isNewHouse == 1 ? '    New' : '    Not New', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
                   ]),
                 ),
 
@@ -308,7 +343,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                     children: <Widget>[
                     Text('Bedrooms    ', style: TextStyle(color:Colors.grey[600])),
                     Container(color: Colors.grey, height: 1.4, width: 200),
-                    Text('   6', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
+                    Text('   ${detail.totalRooms}', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
                   ]),
                 ),
 
@@ -317,9 +352,9 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                   child: Row(
                   //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                    Text('Bathrooms   ', style: TextStyle(color:Colors.grey[600])),
+                    Text('Has Water   ', style: TextStyle(color:Colors.grey[600])),
                     Container(color: Colors.grey, height: 1.4, width: 200),
-                    Text('   5', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
+                    Text(detail.isHaveWater == 1 ?'   Yes' : 'No', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
                   ]),
                 ),
 
@@ -330,7 +365,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                     children: <Widget>[
                     Text('Parking Space    ', style: TextStyle(color:Colors.grey[600])),
                     Container(color: Colors.grey, height: 1.4, width: 170),
-                    Text('    Yes', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
+                    Text(detail.isParkingSpace == 1 ?'    Yes' : '    No', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
                   ]),
                 ),
 
@@ -342,7 +377,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                     children: <Widget>[
                     Text('Furnishing    ', style: TextStyle(color:Colors.grey[600])),
                     Container(color: Colors.grey, height: 1.4, width: 200),
-                    Text('   Unfurnished', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
+                    Text(detail.isFurnished == 1 ?'   furnished' : 'Unfurnished', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
                   ]),
                 ),
 
@@ -353,7 +388,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
                     children: <Widget>[
                     Text('Fenced    ', style: TextStyle(color:Colors.grey[600])),
                     Container(color: Colors.grey, height: 1.4, width: 215),
-                    Text('    Yes', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
+                    Text(detail.isFenced == 1 ? '    Yes' : '    No', style: TextStyle(color:darkBG, fontWeight: FontWeight.bold)),
                   ]),
                 ),
 
@@ -374,7 +409,7 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
             padding: EdgeInsets.all(20.0),
               color: Colors.white,
               child: Text(
-                  '6 bed room bungalow at a very affordable price, new home built for the family and for anyone interested.',
+                  '${detail.description}',
                   style: TextStyle(color:Colors.grey[600], height: 1.5))),
           YMargin(10),
 
@@ -455,7 +490,22 @@ class _HouseDetailScreenState extends State<HouseDetailScreen> {
 
 
         ],
-      ),
-    );
-  }
+     );}
+
+    else{
+      return Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:<Widget>[
+            Text('Error fetching details'),
+            Button(onPressed: (){},text: 'Retry')
+        ]
+        ));
+    }
+
+
+      }
+
+    
 }

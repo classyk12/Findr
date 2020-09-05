@@ -123,7 +123,19 @@ class _DashboardState extends State<DashboardScreen> {
       }
     } else {
       return Center(
-        child: Text(' agent Error'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(' agent Error'),
+            RaisedButton(
+              color: darkBG,
+              onPressed:(){
+
+            }, child: Text('Reload')),
+          ],
+        ),
+
       );
     }
 
