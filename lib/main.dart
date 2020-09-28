@@ -3,6 +3,7 @@ import 'package:findr/providers/auth_provider.dart';
 import 'package:findr/providers/house_provider.dart';
 import 'package:findr/screens/Accounts/agent_profile.dart';
 import 'package:findr/screens/Onboarding/landing_page.dart';
+import 'package:findr/screens/create-listing.dart';
 import 'package:findr/screens/house-details.dart';
 import 'package:findr/screens/login_screen.dart';
 import 'package:findr/screens/splash_screen.dart';
@@ -11,7 +12,6 @@ import 'package:findr/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:findr/services/service_locator.dart';
-
 
 void main() {
   setupServiceLocator();
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>(create: (_)=> AuthProvider()),
-        ChangeNotifierProvider<HouseProvider>(create: (_)=> HouseProvider()),
-        ChangeNotifierProvider<AgentProvider>(create: (_)=> AgentProvider()),
+        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<HouseProvider>(create: (_) => HouseProvider()),
+        ChangeNotifierProvider<AgentProvider>(create: (_) => AgentProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         theme: lightTheme,
 //      darkTheme: darkTheme,
         initialRoute: '/',
-        routes: {         
+        routes: {
           '/': (context) => SplashScreen(),
           // When navigating to the "/landing" route, build the landing_page widget.
           '/login': (context) => LoginScreen(),
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           '/user-profile': (context) => AgentProfileScreen(),
           '/dashboard': (context) => DashboardScreen(),
           '/house-details': (context) => HouseDetailScreen(),
-
+          '/create-listing': (context) => CreateListingScreen(),
         },
       ),
     );

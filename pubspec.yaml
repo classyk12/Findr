@@ -35,7 +35,7 @@ dependencies:
   
   flutter_spinkit: ^4.1.2
 
-  lottie: ^0.3.6
+  # lottie: ^0.3.6
 
   line_icons: ^0.2.0
 

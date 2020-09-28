@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:findr/models/agent.dart';
@@ -29,8 +28,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-
- // FirebaseServices _services = locator<FirebaseServices>();
+  // FirebaseServices _services = locator<FirebaseServices>();
 
   final int _numPages = 3;
   final PageController _pageController = PageController(initialPage: 0);
@@ -40,9 +38,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String base64Image;
   String fileName;
   final picker = ImagePicker();
-  
-
-
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
@@ -74,8 +69,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -132,8 +125,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )
         ],
       ),
-
-
       body: Stack(
 //              fit: StackFit.expand,
 //            crossAxisAlignment: CrossAxisAlignment.center,
@@ -150,12 +141,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   _currentPage = page;
                 });
               },
-              children: <Widget>[            
+              children: <Widget>[
                 _onBoarding1(),
-                 _signup(),  
-                _profile(context),           
-                                
-                
+                _signup(),
+                _profile(context),
               ],
             ),
           ),
@@ -246,7 +235,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-
   Widget _signup() {
     return Padding(
       padding: const EdgeInsets.all(15.0).add(
@@ -274,41 +262,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(
             'Full name',
             style: TextStyle(
-                fontSize: 15,
-                color: darkBG,
-                fontWeight: FontWeight.w600),
+                fontSize: 15, color: darkBG, fontWeight: FontWeight.w600),
           ),
-          TextInput(controller: fullNameController, hintText: 'Adekunle Ciroma',),
+          TextInput(
+            controller: fullNameController,
+            hintText: 'Adekunle Ciroma',
+          ),
           YMargin(20),
           Text(
             'Phone number',
             style: TextStyle(
-                fontSize: 15,
-                color: darkBG,
-                fontWeight: FontWeight.w600),
+                fontSize: 15, color: darkBG, fontWeight: FontWeight.w600),
           ),
-
-          PhoneField(hintText: '(0) 7089175605', onChanged: (value){
-            phoneNumberController.text = value;
-          }, controller:  phoneNumberController ,),
-
-
+          PhoneField(
+            hintText: '(0) 7089175605',
+            onChanged: (value) {
+              phoneNumberController.text = value;
+            },
+            controller: phoneNumberController,
+          ),
           YMargin(20),
           Text(
             'E-mail',
             style: TextStyle(
-                fontSize: 15,
-                color: darkBG,
-                fontWeight: FontWeight.w600),
+                fontSize: 15, color: darkBG, fontWeight: FontWeight.w600),
           ),
-          TextInput(controller: emailController, hintText: 'Adekunle_ciroma@zmail.ng',),
+          TextInput(
+            controller: emailController,
+            hintText: 'Adekunle_ciroma@zmail.ng',
+          ),
           YMargin(20),
           Text(
             'Four digit pin',
             style: TextStyle(
-                fontSize: 15,
-                color: darkBG,
-                fontWeight: FontWeight.w600),
+                fontSize: 15, color: darkBG, fontWeight: FontWeight.w600),
           ),
           YMargin(10),
           Padding(
@@ -317,62 +304,67 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           YMargin(30),
           Consumer<AuthProvider>(
-            builder: (ctx, provider, widget) => Button(text: 'Continue', onPressed: () async {
+            builder: (ctx, provider, widget) => Button(
+              text: 'Continue',
+              onPressed: () async {
+                showDialog(
+                    context: ctx,
+                    builder: (ctx) => AlertDialog(
+                          content: Container(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SpinKitCircle(color: darkAccent),
+                            ],
+                          )),
+                        ));
 
-              showDialog(context: ctx,
-                  builder: (ctx) => AlertDialog(
-                    content: Container(child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SpinKitCircle(color: darkAccent),
-                      ],
-                    )),
-                  ));
+                RegisterModel registerModel = RegisterModel(
+                    phoneNumber: phoneNumberController.text,
+                    email: emailController.text,
+                    password: pinController.text,
+                    fullName: fullNameController.text,
+                    userType: userType);
 
-              RegisterModel registerModel = RegisterModel(phoneNumber: phoneNumberController.text, email: emailController.text,
-              password: pinController.text, fullName: fullNameController.text, userType: userType);
+                BaseResponse<UserData> response =
+                    await provider.register(registerModel);
 
-              BaseResponse<UserData> response = await provider.register(registerModel);
+                if (response.status == Status.COMPLETED) {
+                  print(response.message);
+                  //store user information in shared preference
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
 
-              if(response.status == Status.COMPLETED){
-                print(response.message);
-                //store user information in shared preference
-                  SharedPreferences pref =  await SharedPreferences.getInstance();
+                  pref.setString('fullName', response.data.fullName);
+                  pref.setString('token', response.data.accessToken);
+                  pref.setInt('id', response.data.id);
 
+                  print(pref.get('token'));
 
-                pref.setString('fullName', response.data.fullName);
-                pref.setString('token', response.data.accessToken);
-                pref.setInt('id', response.data.id);
+                  Navigator.pop(context);
+                  _pageController.animateToPage(_currentPage + 1,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.linearToEaseOut);
 
-                print(pref.get('token'));
-                
-                Navigator.pop(context);
-                _pageController.animateToPage(_currentPage + 1,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.linearToEaseOut);
-
-                    //attempt to send the otp to the user device
+                  //attempt to send the otp to the user device
                   //bool res = await _services.verifyPhoneNumber(phoneNumberController.text, context);
                   //print(res);
-              }
-              
-              
-              else{
-                Navigator.pop(context);
-                print(response.message);
-              }
-
-
-            }, height: 50,),
+                } else {
+                  Navigator.pop(context);
+                  print(response.message);
+                }
+              },
+              height: 50,
+            ),
           ),
-
           YMargin(10),
           FlatButton(
             splashColor: lightAccent.withOpacity(0.2),
-            onPressed: (){
-              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
+            onPressed: () {
+              _pageController.animateToPage(_currentPage - 1,
+                  duration: Duration(milliseconds: 300),
                   curve: Curves.linearToEaseOut);
             },
             child: Text(
@@ -383,14 +375,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 
-
-  Widget _profile(BuildContext context){
+  Widget _profile(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0).add(
         EdgeInsets.only(left: 5, right: 5),
@@ -415,30 +405,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           YMargin(80),
 
-          Center(child: ProfilePicture(
-            child: FutureBuilder(builder: (context,data){
-              if(data.hasData){
-                // setState(() {
-                base64Image = base64Encode(File(data.data.path).readAsBytesSync());
-                 fileName = data.data.path.split(".").last;
-                // print(fileName);
-               // print(fileName);
-               
-                
-               return Image.file(File(data.data.path), fit: BoxFit.fitWidth, width: 120);
-              }
-              else{
-                return Text('no image selected',style:TextStyle(fontSize: 12));
-              }
-              
-            },
-            future: file
-            ),
+          Center(
+              child: ProfilePicture(
+                  child: FutureBuilder(
+                      builder: (context, data) {
+                        if (data.hasData) {
+                          // setState(() {
+                          base64Image = base64Encode(
+                              File(data.data.path).readAsBytesSync());
+                          fileName = data.data.path.split(".").last;
+                          // print(fileName);
+                          // print(fileName);
 
-            onPressed: (){
-            displayDialog();
-
-          }, showCamera: true)),
+                          return Image.file(File(data.data.path),
+                              fit: BoxFit.fitWidth, width: 120);
+                        } else {
+                          return Text('no image selected',
+                              style: TextStyle(fontSize: 12));
+                        }
+                      },
+                      future: file),
+                  onPressed: () {
+                    displayDialog();
+                  },
+                  showCamera: true)),
 //          YMargin(20),
 //          Text(
 //            'Full name',
@@ -449,102 +439,107 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 //          ),
 //          TextInput(controller: null, hintText: 'Adekunle Ciroma',),
           YMargin(30),
-          
-           Consumer<AgentProvider>(
-              builder: (ctx, provider, widget) => Button(text: 'Create Profile', onPressed: () async {
-                //upload image 
-                if(base64Image == null || base64Image.isEmpty){
 
-                  if(userType.toLowerCase() == "agent"){
-                     Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+          Consumer<AgentProvider>(
+            builder: (ctx, provider, widget) => Button(
+              text: 'Create Profile',
+              onPressed: () async {
+                //upload image
+                if (base64Image == null || base64Image.isEmpty) {
+                  if (userType.toLowerCase() == "agent") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => AgentVerificationScreen()));
+                  } else {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => DashboardScreen()));
                   }
-                 else{
-                    
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
-                 }
-                }            
-                else{
-                  
-                  showDialog(context: ctx,
-                    builder: (ctx) => AlertDialog(
-                      content: Container(child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SpinKitCircle(color: darkAccent),
-                        ],
-                      )),
-                    ));
+                } else {
+                  showDialog(
+                      context: ctx,
+                      builder: (ctx) => AlertDialog(
+                            content: Container(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SpinKitCircle(color: darkAccent),
+                              ],
+                            )),
+                          ));
 
-                    SharedPreferences pref = await SharedPreferences.getInstance();
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
 
                   var fullName = pref.getString("fullName");
                   String full64 = 'data:image/$fileName;base64,' + base64Image;
-                 // String full64 = 'data:image/jpeg;base64';
-                  UserUpdateModel uploadModel = UserUpdateModel(image: full64,
-                  fullName: fullName);
+                  // String full64 = 'data:image/jpeg;base64';
+                  UserUpdateModel uploadModel =
+                      UserUpdateModel(image: full64, fullName: fullName);
 
-                BaseResponse<UserInfo> response = await provider.updateProfile(uploadModel);
+                  BaseResponse<UserInfo> response =
+                      await provider.updateProfile(uploadModel);
 
-                if(response.status == Status.COMPLETED){
-                  pref.setString("image", response.data.image);
-                  print(response.message);
-                  if(userType.toLowerCase() == 'agent'){
+                  if (response.status == Status.COMPLETED) {
+                    pref.setString("image", response.data.image);
+                    print(response.message);
+                    if (userType.toLowerCase() == 'agent') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => AgentVerificationScreen()));
+                    } else {
+                      //NAVIGATE TO DASHBOARD and get USER INFORMATION
 
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
+                      provider.getDashboard(); //get user logged in information
+
+                      HouseProvider houseProvider =
+                          Provider.of<HouseProvider>(context, listen: false);
+                      houseProvider.getHouses(); //get hpuses for student
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => DashboardScreen()));
+                    }
+
+                    // _pageController.animateToPage(_currentPage + 1,
+                    //     duration: Duration(milliseconds: 300),
+                    //     curve: Curves.linearToEaseOut);
+                  } else {
+                    Navigator.pop(context);
+                    print(response.message);
+                    // SnackBar snackbar =  SnackBar(content: response.message ?? Text('upload failed, try again'));
+                    // snackbar.
                   }
-                  else{
-                    //NAVIGATE TO DASHBOARD and get USER INFORMATION
-
-                  provider.getDashboard(); //get user logged in information
-                
-                  HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
-                  houseProvider.getHouses(); //get hpuses for student
-
-
-                     Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
-                  }
-                  
-                  // _pageController.animateToPage(_currentPage + 1,
-                  //     duration: Duration(milliseconds: 300),
-                  //     curve: Curves.linearToEaseOut);              
                 }
-                
-                 else{
-                  Navigator.pop(context);
-                  print(response.message);
-                  // SnackBar snackbar =  SnackBar(content: response.message ?? Text('upload failed, try again'));
-                  // snackbar.
-                }
-
-
-
-                }
-              }, height: 50,),
+              },
+              height: 50,
             ),
-
+          ),
 
           YMargin(10),
 
-            Consumer<AgentProvider>(builder: (ctx, provider, widget) =>  FlatButton(
+          Consumer<AgentProvider>(
+            builder: (ctx, provider, widget) => FlatButton(
               splashColor: lightAccent.withOpacity(0.2),
-              onPressed: (){
-                if(userType.toLowerCase() == 'agent'){
-               
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>AgentVerificationScreen()));
-                }
-                else{      
+              onPressed: () {
+                if (userType.toLowerCase() == 'agent') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => AgentVerificationScreen()));
+                } else {
                   //NAVIGATE TO DASHBOARD and get USER INFORMATION
 
                   provider.getDashboard(); //get user logged in information
-                
-                  HouseProvider houseProvider = Provider.of<HouseProvider>(context, listen: false);
+
+                  HouseProvider houseProvider =
+                      Provider.of<HouseProvider>(context, listen: false);
                   houseProvider.getHouses(); //get hpuses for student
 
-
-
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>DashboardScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => DashboardScreen()));
                 }
 
 //              _pageController.animateToPage(_currentPage - 1, duration: Duration(milliseconds: 300),
@@ -557,71 +552,46 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   fontSize: 16.0,
                 ),
               ),
-            ), 
-            
-            )
-            
+            ),
+          )
         ],
       ),
     );
   }
 
-
-
-
-    displayDialog(){
+  displayDialog() {
     //build widget to collect code from user
-    showDialog(context: context,barrierDismissible: true, builder: (context){
-       return AlertDialog(
-              title: Text('Quick actions?', style: TextStyle(color: darkBG, fontSize:20)),
-              content: Text('Choose from the options below'),
-              actions: <Widget>[
-                FlatButton(onPressed: () async{
-                  file = picker.getImage(source: ImageSource.camera).whenComplete(() {
-                     setState(()  {                 
-                   //  if(image != null){
-                   // file = File(image.path);
-                    
-                 //   }
-                   //file = null;
-                  });
-                    //base64Image = base64Encode();
-                    //fileName = file.path.split("/").last;
-                   // print(base64Image);
-                   // print(fileName);
-                  });
-                // var image =  await picker.getImage(source: ImageSource.camera);
-                // print(image);
-                 
-                },
-                 child: Text('use camera', style: TextStyle(color: darkBG, fontSize: 20))),
-
-                FlatButton(onPressed: () async{
-                  file = picker.getImage(source: ImageSource.gallery).whenComplete(() {
-                     setState(()  {                 
-                   //  if(image != null){
-                   // file = File(image.path);
-                    
-                 //   }
-                   //file = null;
-                  });
-                    //base64Image = base64Encode();
-                    //fileName = file.path.split("/").last;
-                   // print(base64Image);
-                   // print(fileName);
-                  });
-                // var image =  await picker.getImage(source: ImageSource.camera);
-                // print(image);
-                 
-                }, child: Text('choose from gallery',style: TextStyle(color: darkBG, fontSize: 20)))
-             ],
-
-             );
-
-    });
-    }
-
-
-
-
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Quick actions?',
+                style: TextStyle(color: darkBG, fontSize: 20)),
+            content: Text('Choose from the options below'),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () async {
+                    file = picker
+                        .getImage(source: ImageSource.camera)
+                        .whenComplete(() {
+                      setState(() {});
+                    });
+                  },
+                  child: Text('use camera',
+                      style: TextStyle(color: darkBG, fontSize: 20))),
+              FlatButton(
+                  onPressed: () async {
+                    file = picker
+                        .getImage(source: ImageSource.gallery)
+                        .whenComplete(() {
+                      setState(() {});
+                    });
+                  },
+                  child: Text('choose from gallery',
+                      style: TextStyle(color: darkBG, fontSize: 20)))
+            ],
+          );
+        });
+  }
 }

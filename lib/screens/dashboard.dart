@@ -9,7 +9,6 @@ import 'package:findr/widgets/house_item.dart';
 import 'package:findr/widgets/loader.dart';
 import 'package:findr/widgets/search_field.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -32,8 +31,7 @@ class _DashboardState extends State<DashboardScreen> {
           title: SearchField(searchController: TextEditingController()),
           brightness: Brightness.dark,
         ),
-        drawer: StudentDrawer(
-            title: 'Dashboard'),
+        drawer: StudentDrawer(title: 'Dashboard'),
 //        floatingActionButton: FloatingActionButton(onPressed: (){}, child: Icon(LineIcons.plus),),
 //        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
@@ -44,9 +42,10 @@ class _DashboardState extends State<DashboardScreen> {
     //display dashboard based on user-type
 //  if((agentProvider.agentDashboardResponse?.data?.userType ?? '').toLowerCase()  == "agent"){
     if (agentProvider.agentDashboardResponse.status == Status.LOADING) {
-      return Loading();
+      return Loading(isLargeLoading: true);
     } else if (agentProvider?.agentDashboardResponse?.status ==
-            Status.COMPLETED && agentProvider.agentDashboardResponse.data != null) {
+            Status.COMPLETED &&
+        agentProvider.agentDashboardResponse.data != null) {
       if ((agentProvider.agentDashboardResponse?.data?.userType ?? '')
               .toLowerCase() ==
           "agent") {
@@ -54,42 +53,38 @@ class _DashboardState extends State<DashboardScreen> {
             agentProvider.agentDashboardResponse.data.agentData.agentlistings;
         if (agentHouses.data.length > 0) {
           return Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 15),
-            child: Column(
-
-              children:<Widget>[
-                 Text('Im the new guy here'),
-                 YMargin(20),
-            ListView.builder(
-                itemCount: agentHouses.data.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => HouseItem(house: agentHouses.data[index],)),
-              ]
-            )
-           
-          );
+              padding: EdgeInsets.only(left: 20, right: 20, top: 15),
+              child: Column(children: <Widget>[
+                Text('Im the new guy here'),
+                YMargin(20),
+                ListView.builder(
+                    itemCount: agentHouses.data.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => HouseItem(
+                          house: agentHouses.data[index],
+                        )),
+              ]));
         } else {
-
-          return Center(child: 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-                 Lottie.asset('assets/lottie/emptyHouse.json', height: 100, width: 100),
+          return Center(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                //  Lottie.asset('assets/lottie/emptyHouse.json', height: 100, width: 100),
                 Text('no listings here!'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(onPressed: (){}, child: Text('Add a listing'),),
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/create-listing');
+                    },
+                    child: Text('Add a listing'),
+                  ),
                 )
                 //Button(text: 'Add a Listing', onPressed: (){}, height: 100, width: 100)
-
-            ]
-          ));
-        
+              ]));
         }
-      }
-      
-       else {
+      } else {
         if (houseProvider?.houseResponse?.status == Status.LOADING) {
           return Loading();
         } else if (houseProvider.houseResponse.status == Status.COMPLETED &&
@@ -97,19 +92,20 @@ class _DashboardState extends State<DashboardScreen> {
           List houses = houseProvider.houseResponse.data;
           if (houses.length > 0) {
             return Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 15),
-                child: Column(
-                  children: <Widget>[
-                    Text('i am the student header'),
-                    YMargin(20),
-                     ListView.builder(
-                    itemCount: houses.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => HouseItem(house: houses[index],))
-                  ],
-                ),
-                
-               );
+              padding: EdgeInsets.only(left: 20, right: 20, top: 15),
+              child: Column(
+                children: <Widget>[
+                  Text('i am the student header'),
+                  YMargin(20),
+                  ListView.builder(
+                      itemCount: houses.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => HouseItem(
+                            house: houses[index],
+                          ))
+                ],
+              ),
+            );
           } else {
             return Center(
               child: Text('student Empty list'),
@@ -129,13 +125,9 @@ class _DashboardState extends State<DashboardScreen> {
           children: <Widget>[
             Text(' agent Error'),
             RaisedButton(
-              color: darkBG,
-              onPressed:(){
-
-            }, child: Text('Reload')),
+                color: darkBG, onPressed: () {}, child: Text('Reload')),
           ],
         ),
-
       );
     }
 
